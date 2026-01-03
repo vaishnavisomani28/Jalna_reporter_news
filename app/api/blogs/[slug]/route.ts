@@ -175,12 +175,12 @@ export async function PUT(
 
     if (content) updates.content = content;
     if (excerpt !== undefined) {
-      updates.excerpt = excerpt ? sanitizeInput(excerpt) : null;
+      updates.excerpt = excerpt ? sanitizeInput(excerpt) : undefined;
     }
     
     // Only update featuredImage if blog is being published
     if (featuredImage !== undefined) {
-      updates.featured_image = published ? (featuredImage || null) : (existingBlog.featured_image || null);
+      updates.featured_image = published ? (featuredImage || undefined) : (existingBlog.featured_image || undefined);
     }
     
     if (published !== undefined) updates.published = published;

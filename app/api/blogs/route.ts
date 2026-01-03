@@ -151,7 +151,7 @@ export const POST = requireAuth(async (request: NextRequest) => {
       slug,
       content,
       excerpt: sanitizedExcerpt,
-      featured_image: published ? (featuredImage || null) : null,
+      featured_image: published ? (featuredImage || undefined) : undefined,
       published: published || false,
       author: 'Admin',
     });
