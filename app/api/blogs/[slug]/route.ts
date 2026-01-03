@@ -183,9 +183,9 @@ export async function PUT(
       updates.excerpt = excerpt ? sanitizeInput(excerpt) : undefined;
     }
     
-    // Only update featuredImage if blog is being published
-    if (featuredImage !== undefined) {
-      updates.featured_image = published ? (featuredImage || undefined) : (existingBlog.featured_image || undefined);
+    // Only update featuredImage if provided
+    if (sanitizedFeaturedImage !== undefined) {
+      updates.featured_image = published ? sanitizedFeaturedImage : (existingBlog.featured_image || undefined);
     }
     
     if (published !== undefined) updates.published = published;
