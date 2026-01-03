@@ -24,7 +24,8 @@ export default function TopCarousel() {
     try {
       const [videosRes, blogsRes] = await Promise.all([
         axios.get('/api/videos?limit=4').catch(err => {
-          console.error('Error fetching videos:', err);
+          // Silently handle errors - videos will just be empty
+          console.error('Error fetching videos for carousel:', err);
           return { data: { videos: [], liveStream: null } };
         }),
         axios.get('/api/blogs?limit=3').catch(err => {
