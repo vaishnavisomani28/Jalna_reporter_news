@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import dynamic from 'next/dynamic';
+import dynamicImport from 'next/dynamic';
 import ShareButtons from '@/components/ShareButtons';
 import { formatDate } from '@/lib/utils';
 import { notFound } from 'next/navigation';
@@ -8,7 +8,7 @@ import DOMPurify from 'isomorphic-dompurify';
 // Force dynamic rendering
 export const dynamic = 'force-dynamic';
 
-const SafeImage = dynamic(() => import('@/components/SafeImage'), { ssr: false });
+const SafeImage = dynamicImport(() => import('@/components/SafeImage'), { ssr: false });
 
 export async function generateMetadata({
   params,
