@@ -9,14 +9,19 @@ export const metadata: Metadata = {
 
 async function getBlogs(page: number = 1) {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 
+      (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000');
     // Cache for 1 minute to improve performance
     const res = await fetch(`${baseUrl}/api/blogs?page=${page}&limit=12`, { 
       next: { revalidate: 60 },
     });
-    if (!res.ok) throw new Error('Failed to fetch blogs');
+    if (!res.ok) {
+      console.error('Blogs API error:', res.status, res.statusText);
+      throw new Error('Failed to fetch blogs');
+    }
     return await res.json();
   } catch (error) {
+    console.error('Error fetching blogs:', error);
     return { blogs: [], pagination: { page: 1, pages: 1 } };
   }
 }
