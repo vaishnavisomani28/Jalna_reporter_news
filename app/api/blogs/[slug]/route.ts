@@ -123,6 +123,11 @@ export async function PUT(
     }
 
     const { title, content, excerpt, featuredImage, published } = validationResult.data;
+    
+    // Handle featuredImage - convert empty string to undefined
+    const sanitizedFeaturedImage = featuredImage && featuredImage.trim() !== '' 
+      ? featuredImage.trim() 
+      : undefined;
 
     const existingBlog = await blogDb.getBySlug(decodedSlug, false);
 

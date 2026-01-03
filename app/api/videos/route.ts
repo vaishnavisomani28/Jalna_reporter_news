@@ -26,7 +26,20 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    await connectDB();
+    // Connect to MongoDB (required for videos)
+    try {
+      await connectDB();
+    } catch (error) {
+      logger.error('MongoDB connection failed for videos', error instanceof Error ? error : undefined);
+      return NextResponse.json(
+        { 
+          videos: [], 
+          liveStream: null,
+          error: 'Database connection failed. Please check MONGODB_URI in environment variables.',
+        },
+        { status: 503 }
+      );
+    }
 
     const searchParams = request.nextUrl.searchParams;
     const refresh = searchParams.get('refresh') === 'true';

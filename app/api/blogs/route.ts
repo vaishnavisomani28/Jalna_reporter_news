@@ -118,6 +118,11 @@ export const POST = requireAuth(async (request: NextRequest) => {
     // Sanitize inputs
     const sanitizedTitle = sanitizeInput(title);
     const sanitizedExcerpt = excerpt ? sanitizeInput(excerpt) : undefined;
+    
+    // Handle featuredImage - convert empty string to undefined
+    const sanitizedFeaturedImage = featuredImage && featuredImage.trim() !== '' 
+      ? featuredImage.trim() 
+      : undefined;
 
     // Generate slug with collision handling
     let baseSlug = sanitizedTitle
@@ -151,7 +156,7 @@ export const POST = requireAuth(async (request: NextRequest) => {
       slug,
       content,
       excerpt: sanitizedExcerpt,
-      featured_image: published ? (featuredImage || undefined) : undefined,
+      featured_image: published ? sanitizedFeaturedImage : undefined,
       published: published || false,
       author: 'Admin',
     });

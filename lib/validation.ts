@@ -20,7 +20,22 @@ export const blogSchema = z.object({
     .max(500, 'Excerpt must be less than 500 characters')
     .optional()
     .nullable(),
-  featuredImage: z.string().url('Invalid image URL').optional().nullable(),
+  featuredImage: z
+    .string()
+    .optional()
+    .nullable()
+    .refine(
+      (val) => {
+        if (!val || val.trim() === '') return true;
+        try {
+          new URL(val);
+          return true;
+        } catch {
+          return false;
+        }
+      },
+      { message: 'Invalid image URL' }
+    ),
   published: z.boolean().default(false),
 });
 
