@@ -117,7 +117,7 @@ export const POST = requireAuth(async (request: NextRequest) => {
 
     // Sanitize inputs
     const sanitizedTitle = sanitizeInput(title);
-    const sanitizedExcerpt = excerpt ? sanitizeInput(excerpt) : null;
+    const sanitizedExcerpt = excerpt ? sanitizeInput(excerpt) : undefined;
 
     // Generate slug with collision handling
     let baseSlug = sanitizedTitle
