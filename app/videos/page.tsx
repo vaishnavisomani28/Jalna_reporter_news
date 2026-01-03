@@ -1,6 +1,9 @@
 import { Metadata } from 'next';
 import VideoCard from '@/components/VideoCard';
 
+// Force dynamic rendering
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: 'Videos - Jalna Reporter News',
   description: 'Watch all our latest videos and live streams',
@@ -13,7 +16,6 @@ async function getVideos(page: number = 1) {
     // Allow auto-refresh to ensure videos are always available
     const res = await fetch(`${baseUrl}/api/videos?page=${page}&limit=12&autoRefresh=true`, { 
       next: { revalidate: 60 },
-      cache: 'no-store',
     });
     if (!res.ok) {
       console.error('Videos API error:', res.status, res.statusText);

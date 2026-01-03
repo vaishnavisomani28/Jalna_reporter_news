@@ -5,6 +5,9 @@ import { formatDate } from '@/lib/utils';
 import { notFound } from 'next/navigation';
 import DOMPurify from 'isomorphic-dompurify';
 
+// Force dynamic rendering
+export const dynamic = 'force-dynamic';
+
 const SafeImage = dynamic(() => import('@/components/SafeImage'), { ssr: false });
 
 export async function generateMetadata({

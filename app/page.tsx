@@ -6,6 +6,9 @@ import LiveStreamBanner from '@/components/LiveStreamBanner';
 import TopCarousel from '@/components/TopCarousel';
 import HomeWriteButton from '@/components/HomeWriteButton';
 
+// Force dynamic rendering to avoid build timeout
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: 'Jalna Reporter News - Latest News & Updates',
   description: 'Stay updated with the latest news, videos, and articles from Jalna Reporter News',
@@ -24,7 +27,6 @@ async function getVideos() {
     // Allow auto-refresh if database is empty, cache for 2 minutes otherwise
     const res = await fetch(`${baseUrl}/api/videos?limit=6&autoRefresh=true`, { 
       next: { revalidate: 120 },
-      cache: 'no-store', // Force fresh data on first load
     });
     if (!res.ok) {
       console.error('Videos API error:', res.status, res.statusText);

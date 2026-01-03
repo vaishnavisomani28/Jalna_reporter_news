@@ -15,8 +15,10 @@ interface VideoCardProps {
 }
 
 export default function VideoCard({ video }: VideoCardProps) {
+  const youtubeUrl = getYouTubeWatchUrl(video.videoId);
+  
   return (
-    <Link href={`/videos/${video.videoId}`} className="block group">
+    <a href={youtubeUrl} target="_blank" rel="noopener noreferrer" className="block group">
       <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
         <div className="relative aspect-video">
           <Image
@@ -50,7 +52,7 @@ export default function VideoCard({ video }: VideoCardProps) {
           </p>
         </div>
       </div>
-    </Link>
+    </a>
   );
 }
 

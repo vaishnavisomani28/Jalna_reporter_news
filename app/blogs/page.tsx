@@ -2,6 +2,9 @@ import { Metadata } from 'next';
 import BlogCard from '@/components/BlogCard';
 import WriteArticleButton from '@/components/WriteArticleButton';
 
+// Force dynamic rendering
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: 'Blogs & Articles - Jalna Reporter News',
   description: 'Read our latest articles and blog posts',
