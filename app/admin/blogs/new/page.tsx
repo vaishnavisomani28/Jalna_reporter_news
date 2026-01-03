@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import dynamic from 'next/dynamic';
 import axios from 'axios';
@@ -25,7 +25,8 @@ export default function NewBlogPage() {
   const [externalLinks, setExternalLinks] = useState<Array<{ title: string; url: string }>>([]);
   const [newLinkTitle, setNewLinkTitle] = useState('');
   const [newLinkUrl, setNewLinkUrl] = useState('');
-  const quillRef = useRef<any>(null);
+  const quillEditorRef = useRef<any>(null);
+  const quillContainerRef = useRef<HTMLDivElement>(null);
 
   const handleImageUpload = async (file: File) => {
     setIsUploadingImage(true);
@@ -37,11 +38,10 @@ export default function NewBlogPage() {
       const imageUrl = response.data.url;
 
       // Insert image into Quill editor
-      if (quillRef.current) {
-        const quill = quillRef.current.getEditor();
-        const range = quill.getSelection(true);
-        quill.insertEmbed(range.index, 'image', imageUrl);
-        quill.setSelection(range.index + 1);
+      if (quillEditorRef.current) {
+        const range = quillEditorRef.current.getSelection(true);
+        quillEditorRef.current.insertEmbed(range.index, 'image', imageUrl);
+        quillEditorRef.current.setSelection(range.index + 1);
       }
 
       toast.success('Image uploaded successfully!');
@@ -51,6 +51,23 @@ export default function NewBlogPage() {
       setIsUploadingImage(false);
     }
   };
+
+  // Get Quill editor instance after mount
+  useEffect(() => {
+    if (quillContainerRef.current && !quillEditorRef.current) {
+      const timer = setTimeout(() => {
+        const quillEditor = quillContainerRef.current?.querySelector('.ql-editor');
+        if (quillEditor) {
+          const quill = (quillEditor as any).__quill;
+          if (quill) {
+            quillEditorRef.current = quill;
+          }
+        }
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+    return undefined;
+  }, [formData.content]);
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -238,13 +255,13 @@ export default function NewBlogPage() {
               Click to upload images directly into your article content
             </p>
           </div>
-          <ReactQuill
-            ref={quillRef}
-            theme="snow"
-            value={formData.content}
-            onChange={(value) => setFormData({ ...formData, content: value })}
-            className="bg-white"
-            modules={{
+          <div ref={quillContainerRef}>
+            <ReactQuill
+              theme="snow"
+              value={formData.content}
+              onChange={(value) => setFormData({ ...formData, content: value })}
+              className="bg-white"
+              modules={{
               toolbar: [
                 [{ header: [1, 2, 3, false] }],
                 ['bold', 'italic', 'underline', 'strike'],
@@ -255,6 +272,7 @@ export default function NewBlogPage() {
               ],
             }}
           />
+          </div>
           <p className="text-sm text-gray-500 mt-2">
             💡 Tip: Use the toolbar to format text, add links, and insert images. You can also paste image URLs directly.
           </p>
