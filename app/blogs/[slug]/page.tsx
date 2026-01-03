@@ -13,7 +13,8 @@ export async function generateMetadata({
   params: { slug: string };
 }): Promise<Metadata> {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 
+      (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000');
     // Encode the slug for URL
     const encodedSlug = encodeURIComponent(params.slug);
     // Cache metadata for 5 minutes
@@ -41,7 +42,8 @@ export async function generateMetadata({
 
 async function getBlog(slug: string) {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 
+      (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000');
     // Decode the slug first (Next.js params are already decoded, but double-encode might happen)
     const decodedSlug = decodeURIComponent(slug);
     // Then encode for the API call
@@ -51,10 +53,12 @@ async function getBlog(slug: string) {
       next: { revalidate: 300 },
     });
     if (!res.ok) {
+      console.error('Blog API error:', res.status, res.statusText);
       return null;
     }
     return await res.json();
   } catch (error) {
+    console.error('Error fetching blog:', error);
     return null;
   }
 }
