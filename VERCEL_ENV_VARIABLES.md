@@ -34,11 +34,30 @@ SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 - **Kahan se milega**: Supabase Dashboard → Project Settings → API → Service Role Key
 - **⚠️ Warning**: Ye key secret hai, kabhi expose mat karo!
 
-### 4. **MONGODB_URI** ⚠️ CRITICAL (Agar MongoDB use kar rahe ho)
+### 4. **MONGODB_URI** ⚠️ CRITICAL (Videos ke liye zaroori)
 ```
-MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/dbname
+MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/dbname?retryWrites=true&w=majority
 ```
-- **Ya phir**: Agar sirf Supabase use kar rahe ho, to ye optional hai
+- **Example:**
+  ```
+  MONGODB_URI=mongodb+srv://somanivaishnavi28_db_user:ECbyTYHbbvpmiO2i@jalna-reporter-news.ahvsaqn.mongodb.net/jalnareporternews?retryWrites=true&w=majority
+  ```
+- **Note:** Database name (`/jalnareporternews`) zaroori hai
+- **Kahan se milega:** MongoDB Atlas → Cluster → Connect → Connection String
+
+### 5. **YOUTUBE_API_KEY** ⚠️ CRITICAL (Videos ke liye zaroori)
+```
+YOUTUBE_API_KEY=AIzaSy...your_api_key_here
+```
+- **Kahan se milega:** Google Cloud Console → APIs & Services → Credentials → Create API Key
+- **Important:** YouTube Data API v3 enable karna hoga
+
+### 6. **YOUTUBE_CHANNEL_ID** ⚠️ CRITICAL (Videos ke liye zaroori)
+```
+YOUTUBE_CHANNEL_ID=UC...your_channel_id_here
+```
+- **Kahan se milega:** YouTube Studio → Customization → Basic info → Channel ID
+- **Ya:** Channel URL se extract karo
 
 ---
 
