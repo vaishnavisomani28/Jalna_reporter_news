@@ -32,7 +32,16 @@ export async function GET(
     // Decode the slug in case it's URL encoded
     const decodedSlug = decodeURIComponent(params.slug);
     
-    const blog = await blogDb.getBySlug(decodedSlug, true);
+    let blog;
+    try {
+      blog = await blogDb.getBySlug(decodedSlug, true);
+    } catch (dbError) {
+      logger.error('Supabase connection error in blog GET', dbError instanceof Error ? dbError : undefined);
+      return NextResponse.json(
+        { error: 'Database connection failed. Please check Supabase configuration.' },
+        { status: 503 }
+      );
+    }
 
     if (!blog) {
       return NextResponse.json(

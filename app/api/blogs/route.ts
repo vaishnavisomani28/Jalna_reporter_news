@@ -32,7 +32,23 @@ export async function GET(request: NextRequest) {
     const limit = Math.min(100, Math.max(1, parseInt(searchParams.get('limit') || '10')));
 
     // Get published blogs with pagination
-    const result = await blogDb.getAll(true, page, limit);
+    let result;
+    try {
+      result = await blogDb.getAll(true, page, limit);
+    } catch (dbError) {
+      logger.error('Supabase connection error in blog GET', dbError instanceof Error ? dbError : undefined);
+      return NextResponse.json({
+        blogs: [],
+        pagination: {
+          page: 1,
+          limit: 10,
+          total: 0,
+          pages: 0,
+        },
+        error: 'Database connection failed. Please check Supabase configuration.',
+      }, { status: 503 });
+    }
+    
     const blogsData = result.data || [];
     const total = result.count || 0;
 

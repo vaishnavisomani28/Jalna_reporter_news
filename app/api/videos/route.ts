@@ -69,6 +69,11 @@ export async function GET(request: NextRequest) {
         const liveStream = await checkLiveStream();
 
         logger.info(`Fetched ${youtubeVideos.length} videos from YouTube`);
+        
+        // If no videos fetched, log warning but continue
+        if (youtubeVideos.length === 0) {
+          logger.warn('No videos fetched from YouTube. Check YOUTUBE_API_KEY and YOUTUBE_CHANNEL_ID.');
+        }
 
         // Use bulk operations for better performance
         const updatePromises = youtubeVideos.map(ytVideo =>
