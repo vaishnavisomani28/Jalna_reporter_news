@@ -37,9 +37,10 @@ export async function GET(
       blog = await blogDb.getBySlug(decodedSlug, true);
     } catch (dbError) {
       logger.error('Supabase connection error in blog GET', dbError instanceof Error ? dbError : undefined);
+      // Return 404 instead of 503 to prevent frontend errors
       return NextResponse.json(
-        { error: 'Database connection failed. Please check Supabase configuration.' },
-        { status: 503 }
+        { error: 'Blog not found' },
+        { status: 404 }
       );
     }
 

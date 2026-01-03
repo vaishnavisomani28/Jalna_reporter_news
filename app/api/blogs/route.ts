@@ -37,6 +37,7 @@ export async function GET(request: NextRequest) {
       result = await blogDb.getAll(true, page, limit);
     } catch (dbError) {
       logger.error('Supabase connection error in blog GET', dbError instanceof Error ? dbError : undefined);
+      // Return 200 with empty data to prevent frontend crashes
       return NextResponse.json({
         blogs: [],
         pagination: {
@@ -46,7 +47,7 @@ export async function GET(request: NextRequest) {
           pages: 0,
         },
         error: 'Database connection failed. Please check Supabase configuration.',
-      }, { status: 503 });
+      }, { status: 200 });
     }
     
     const blogsData = result.data || [];
