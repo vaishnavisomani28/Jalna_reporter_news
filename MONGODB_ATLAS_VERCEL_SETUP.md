@@ -250,9 +250,17 @@
 
 ### 5.2 Connection Method Select
 
-1. **Connection Method:**
-   - ✅ **"Connect your application"** select karo
-   - (Not "MongoDB Shell" ya "MongoDB Compass")
+1. **Connection Method Screen me ye options dikhenge:**
+   - **Drivers** (Connect your application) ✅ **YEH SELECT KARO**
+   - Compass (GUI tool)
+   - Shell (Command line)
+   - MongoDB for VS Code
+   - Atlas SQL
+
+2. **✅ "Drivers" ya "Connect your application" select karo:**
+   - Ye option **Node.js, Go, etc.** drivers ke liye hai
+   - Is par click karo
+   - **Note:** Compass, Shell, ya VS Code select mat karo (wo different use cases ke liye hain)
 
 2. **Driver & Version:**
    - **Driver:** `Node.js` (Default)
