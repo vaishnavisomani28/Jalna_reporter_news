@@ -167,16 +167,15 @@ export const POST = requireAuth(async (request: NextRequest) => {
       }
     }
 
-    try {
-      const blog = await blogDb.create({
-        title: sanitizedTitle,
-        slug,
-        content,
-        excerpt: sanitizedExcerpt,
-        featured_image: published ? sanitizedFeaturedImage : undefined,
-        published: published || false,
-        author: 'Admin',
-      });
+    const blog = await blogDb.create({
+      title: sanitizedTitle,
+      slug,
+      content,
+      excerpt: sanitizedExcerpt,
+      featured_image: published ? sanitizedFeaturedImage : undefined,
+      published: published || false,
+      author: 'Admin',
+    });
 
     // Transform to match expected format
     const formattedBlog = {
@@ -193,7 +192,10 @@ export const POST = requireAuth(async (request: NextRequest) => {
     };
 
     logger.info('Blog created successfully', { slug, title: sanitizedTitle });
-    return NextResponse.json(formattedBlog, { status: 201 });
+    return NextResponse.json(
+      { message: 'Blog created successfully', blog: formattedBlog },
+      { status: 201 }
+    );
   } catch (error: unknown) {
     logger.error('Error creating blog', error instanceof Error ? error : undefined);
     
@@ -205,8 +207,18 @@ export const POST = requireAuth(async (request: NextRequest) => {
       );
     }
     
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    
+    // Check for specific errors
+    if (errorMessage.includes('Supabase') || errorMessage.includes('supabase')) {
+      return NextResponse.json(
+        { error: 'Database connection failed. Please check Supabase configuration.' },
+        { status: 500 }
+      );
+    }
+    
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: `Failed to create blog: ${errorMessage}` },
       { status: 500 }
     );
   }
