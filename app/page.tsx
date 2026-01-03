@@ -18,34 +18,41 @@ export const metadata: Metadata = {
 
 async function getVideos() {
   try {
-    // Use relative URL for API calls in server components
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+    // Use absolute URL for server-side fetch in production
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 
+      (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000');
     // Allow auto-refresh if database is empty, cache for 2 minutes otherwise
     const res = await fetch(`${baseUrl}/api/videos?limit=6&autoRefresh=true`, { 
       next: { revalidate: 120 },
+      cache: 'no-store', // Force fresh data on first load
     });
     if (!res.ok) {
+      console.error('Videos API error:', res.status, res.statusText);
       return { videos: [], liveStream: null };
     }
     const data = await res.json();
     return data;
   } catch (error) {
+    console.error('Error fetching videos:', error);
     return { videos: [], liveStream: null };
   }
 }
 
 async function getBlogs() {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 
+      (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000');
     // Cache for 2 minutes to improve performance (blogs don't change frequently)
     const res = await fetch(`${baseUrl}/api/blogs?limit=6`, { 
       next: { revalidate: 120 },
     });
     if (!res.ok) {
+      console.error('Blogs API error:', res.status, res.statusText);
       return { blogs: [] };
     }
     return await res.json();
   } catch (error) {
+    console.error('Error fetching blogs:', error);
     return { blogs: [] };
   }
 }

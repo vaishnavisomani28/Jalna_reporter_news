@@ -151,15 +151,16 @@ export const POST = requireAuth(async (request: NextRequest) => {
       }
     }
 
-    const blog = await blogDb.create({
-      title: sanitizedTitle,
-      slug,
-      content,
-      excerpt: sanitizedExcerpt,
-      featured_image: published ? sanitizedFeaturedImage : undefined,
-      published: published || false,
-      author: 'Admin',
-    });
+    try {
+      const blog = await blogDb.create({
+        title: sanitizedTitle,
+        slug,
+        content,
+        excerpt: sanitizedExcerpt,
+        featured_image: published ? sanitizedFeaturedImage : undefined,
+        published: published || false,
+        author: 'Admin',
+      });
 
     // Transform to match expected format
     const formattedBlog = {

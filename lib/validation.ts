@@ -21,21 +21,15 @@ export const blogSchema = z.object({
     .optional()
     .nullable(),
   featuredImage: z
-    .string()
+    .union([
+      z.string().url('Invalid image URL'),
+      z.literal(''),
+      z.null(),
+      z.undefined(),
+    ])
     .optional()
     .nullable()
-    .refine(
-      (val) => {
-        if (!val || val.trim() === '') return true;
-        try {
-          new URL(val);
-          return true;
-        } catch {
-          return false;
-        }
-      },
-      { message: 'Invalid image URL' }
-    ),
+    .transform((val) => (val === '' || val === null ? undefined : val)),
   published: z.boolean().default(false),
 });
 

@@ -8,14 +8,20 @@ export const metadata: Metadata = {
 
 async function getVideos(page: number = 1) {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 
+      (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000');
     // Allow auto-refresh to ensure videos are always available
     const res = await fetch(`${baseUrl}/api/videos?page=${page}&limit=12&autoRefresh=true`, { 
       next: { revalidate: 60 },
+      cache: 'no-store',
     });
-    if (!res.ok) throw new Error('Failed to fetch videos');
+    if (!res.ok) {
+      console.error('Videos API error:', res.status, res.statusText);
+      throw new Error('Failed to fetch videos');
+    }
     return await res.json();
   } catch (error) {
+    console.error('Error fetching videos:', error);
     return { videos: [], pagination: { page: 1, pages: 1 } };
   }
 }
