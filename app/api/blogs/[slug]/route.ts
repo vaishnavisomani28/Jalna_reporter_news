@@ -73,15 +73,17 @@ export async function GET(
     // Check if it's a database connection error
     const errorMessage = error instanceof Error ? error.message : 'Unknown error';
     if (errorMessage.includes('Supabase') || errorMessage.includes('supabase') || errorMessage.includes('connection')) {
+      // Return 404 instead of 503 to prevent frontend errors
       return NextResponse.json(
-        { error: 'Database connection failed. Please check Supabase configuration.' },
-        { status: 503 }
+        { error: 'Blog not found' },
+        { status: 404 }
       );
     }
     
+    // For other errors, return 404 to prevent frontend crashes
     return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
+      { error: 'Blog not found' },
+      { status: 404 }
     );
   }
 }
