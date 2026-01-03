@@ -24,7 +24,13 @@ export async function generateMetadata({
     const res = await fetch(`${baseUrl}/api/blogs/${encodedSlug}`, { 
       next: { revalidate: 300 },
     });
-    if (!res.ok) throw new Error('Blog not found');
+    if (!res.ok) {
+      // Return default metadata if blog not found
+      return {
+        title: 'Article Not Found - Jalna Reporter News',
+        description: 'The article you are looking for could not be found.',
+      };
+    }
     const blog = await res.json();
 
     return {
@@ -36,9 +42,11 @@ export async function generateMetadata({
         images: blog.featuredImage ? [blog.featuredImage] : [],
       },
     };
-  } catch {
+  } catch (error) {
+    // Return default metadata on any error
     return {
-      title: 'Article Not Found - Jalna Reporter News',
+      title: 'Article - Jalna Reporter News',
+      description: 'Read our latest articles and news.',
     };
   }
 }
@@ -48,7 +56,13 @@ async function getBlog(slug: string) {
     const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 
       (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000');
     // Decode the slug first (Next.js params are already decoded, but double-encode might happen)
-    const decodedSlug = decodeURIComponent(slug);
+    let decodedSlug = slug;
+    try {
+      decodedSlug = decodeURIComponent(slug);
+    } catch {
+      // If decode fails, use slug as-is
+      decodedSlug = slug;
+    }
     // Then encode for the API call
     const encodedSlug = encodeURIComponent(decodedSlug);
     // Cache for 5 minutes to improve performance (blog content doesn't change frequently)
@@ -57,9 +71,17 @@ async function getBlog(slug: string) {
     });
     if (!res.ok) {
       console.error('Blog API error:', res.status, res.statusText);
+      // Try to get error message from response
+      try {
+        const errorData = await res.json();
+        console.error('Blog API error details:', errorData.error);
+      } catch {
+        // Ignore JSON parse errors
+      }
       return null;
     }
-    return await res.json();
+    const blog = await res.json();
+    return blog;
   } catch (error) {
     console.error('Error fetching blog:', error);
     return null;

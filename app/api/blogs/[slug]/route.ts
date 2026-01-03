@@ -30,7 +30,13 @@ export async function GET(
     }
 
     // Decode the slug in case it's URL encoded
-    const decodedSlug = decodeURIComponent(params.slug);
+    let decodedSlug = params.slug;
+    try {
+      decodedSlug = decodeURIComponent(params.slug);
+    } catch {
+      // If decode fails, use slug as-is (might already be decoded)
+      decodedSlug = params.slug;
+    }
     
     let blog;
     try {
