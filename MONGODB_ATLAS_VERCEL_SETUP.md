@@ -38,27 +38,49 @@
 
 ### 2.1 Dashboard me Cluster Create Option Find Karo
 
-**Option A: Agar "Build a Database" button dikhe:**
-1. Atlas Dashboard me directly **"Build a Database"** button dikhega
-2. Is par click karo
+**⚠️ Important:** Agar koi option nahi dikh raha, to ye steps try karo:
 
-**Option B: Agar "Create" button dikhe:**
-1. Top right corner me **"Create"** button dikhega
-2. Click karo → **"Database"** select karo
+**Step 1: Dashboard Check Karo**
+1. MongoDB Atlas dashboard open karo: https://cloud.mongodb.com
+2. Login karo (agar logged in nahi ho)
+3. Dashboard screen dekho
 
-**Option C: Agar kuch bhi nahi dikhe (New Account):**
-1. Dashboard me **"Get started with Atlas"** section dikhega
-2. **"Build a Database"** ya **"Create"** button click karo
+**Step 2: Different Options Try Karo**
 
-**Option D: Left Sidebar se:**
-1. Left sidebar me **"Deployments"** ya **"Database"** section dikhega
-2. **"Create"** ya **"New Cluster"** button click karo
+**Option A: Main Dashboard Button**
+- Dashboard me **"Build a Database"** (Big green button) dikhega
+- Ya **"Create"** button (top right corner)
+- Click karo
 
-**Option E: Direct Link (Agar kuch nahi dikhe):**
-1. Browser me ye URL open karo:
+**Option B: Left Sidebar**
+1. Left side me **"Deployments"** section dekho
+2. Agar koi cluster already hai, to:
+   - **"Create"** button (top right) click karo
+   - Ya **"New Deployment"** button click karo
+3. Agar koi cluster nahi hai, to:
+   - **"Create"** button directly dikhega
+
+**Option C: Top Navigation Bar**
+1. Top menu me **"Deployments"** tab click karo
+2. **"Create"** button (top right) click karo
+3. **"Database"** select karo
+
+**Option D: Direct URL (Easiest Method)**
+1. Browser me ye URL directly open karo:
    ```
    https://cloud.mongodb.com/v2#/atlas/clusters/create
    ```
+2. Ye directly cluster creation page par le jayega
+
+**Option E: New Account Setup**
+- Agar account abhi create kiya hai:
+  1. Welcome screen me **"Get Started"** ya **"Build a Database"** button dikhega
+  2. Click karo
+
+**Still Not Working?**
+- Browser refresh karo (F5)
+- Different browser try karo (Chrome, Firefox)
+- Incognito mode me try karo
 
 ### 2.2 Deployment Type Select
 
