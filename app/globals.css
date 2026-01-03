@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply bg-white text-gray-900;
+}
+
+/* Quill Editor Styles */
+.ql-container {
+  min-height: 300px;
+}
+
+.ql-editor {
+  min-height: 300px;
+}
+
+/* Floating Button Animation */
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}

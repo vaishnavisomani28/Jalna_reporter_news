@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <!-- Background -->
+  <rect width="200" height="200" fill="#fff"/>
+  
+  <!-- JALNA - Orange banner -->
+  <g transform="translate(20, 40) skewX(-12)">
+    <rect x="0" y="0" width="160" height="35" fill="#f97316" stroke="#000" stroke-width="3"/>
+    <text x="80" y="25" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#fff" text-anchor="middle" dominant-baseline="middle">JALNA</text>
+  </g>
+  
+  <!-- REPORTER - Red banner -->
+  <g transform="translate(20, 75) skewX(-12)">
+    <rect x="0" y="0" width="160" height="35" fill="#dc2626" stroke="#000" stroke-width="3"/>
+    <text x="80" y="25" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#fff" text-anchor="middle" dominant-baseline="middle">REPORTER</text>
+  </g>
+  
+  <!-- NEWS - Large gray text -->
+  <text x="100" y="140" font-family="Arial, sans-serif" font-size="32" font-weight="bold" fill="#374151" text-anchor="middle">NEWS</text>
+</svg>
+

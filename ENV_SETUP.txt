@@ -1,0 +1,27 @@
+===========================================
+ENVIRONMENT VARIABLES SETUP
+===========================================
+
+Create a file named ".env.local" in the root directory with the following content:
+
+-------------------------------------------
+MONGODB_URI=mongodb://localhost:27017/jalnareporternews
+JWT_SECRET=jalna-reporter-news-secret-key-2024-change-this
+YOUTUBE_API_KEY=AIzaSyCb2k2-FWIsgWKAFn4fa2el6Hp_hQ-Ntv0
+YOUTUBE_CHANNEL_ID=UCL4LvX4wjmwI8ZLpH4Yp3PQ
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
+-------------------------------------------
+
+IMPORTANT:
+1. Make sure MongoDB is running on your system
+2. If using MongoDB Atlas, replace MONGODB_URI with your Atlas connection string
+3. Change JWT_SECRET to a strong random string in production
+
+After creating .env.local, run:
+npm run create-admin
+
+Then start the server:
+npm run dev
+
+===========================================
+

@@ -1,0 +1,22 @@
+LOGO SETUP INSTRUCTIONS
+======================
+
+To add your actual logo:
+
+1. Place your logo image in this directory (/public/)
+2. Name it: logo.png (or logo.jpg, logo.svg)
+3. Update components/Logo.tsx:
+   - Change: const hasLogo = false;
+   - To: const hasLogo = true;
+4. The logo will automatically appear in the header
+
+Recommended logo dimensions:
+- Width: 120-200px
+- Height: 60-80px
+- Format: PNG (with transparency) or SVG
+
+The current placeholder matches your design description:
+- JALNA on orange banner
+- REPORTER on red banner  
+- NEWS in large gray text
+

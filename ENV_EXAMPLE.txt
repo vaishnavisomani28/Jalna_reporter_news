@@ -1,0 +1,65 @@
+# ============================================
+# ENVIRONMENT VARIABLES CONFIGURATION
+# ============================================
+# Copy this file to .env.local and fill in your actual values
+# NEVER commit .env.local to version control!
+
+# ============================================
+# SUPABASE DATABASE CONFIGURATION
+# ============================================
+# Get these from your Supabase project settings
+# Project URL: https://your-project.supabase.co
+# Anon Key: Found in Project Settings > API
+# Service Role Key: Found in Project Settings > API (keep secret!)
+NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key-here
+SUPABASE_SERVICE_ROLE_KEY=your-service-role-key-here
+
+# ============================================
+# OLD MONGODB (Optional - for migration)
+# ============================================
+# MONGODB_URI=mongodb://localhost:27017/jalnareporternews
+
+# ============================================
+# JWT AUTHENTICATION
+# ============================================
+# Generate a strong random secret key for JWT tokens
+# Use: openssl rand -base64 32 (or any secure random string generator)
+# IMPORTANT: Use a different secret in production!
+JWT_SECRET=your-super-secret-jwt-key-change-this-in-production
+
+# ============================================
+# YOUTUBE API CONFIGURATION
+# ============================================
+# Get your YouTube Data API v3 key from Google Cloud Console
+# https://console.cloud.google.com/
+YOUTUBE_API_KEY=your-youtube-api-key-here
+YOUTUBE_CHANNEL_ID=UCyour-channel-id-here
+
+# ============================================
+# EMAIL CONFIGURATION
+# ============================================
+# Email service credentials (for contact form)
+# For Gmail, you may need to use an App Password instead of regular password
+# https://support.google.com/accounts/answer/185833
+EMAIL_USER=your-email@gmail.com
+EMAIL_PASSWORD=your-email-password-or-app-password
+EMAIL_TO=recipient-email@gmail.com
+
+# ============================================
+# SITE CONFIGURATION
+# ============================================
+# Your website URL (used for generating absolute URLs)
+# For development: http://localhost:3000
+# For production: https://yourdomain.com
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
+
+# ============================================
+# NOTES
+# ============================================
+# 1. All values above are examples - replace with your actual values
+# 2. Never commit .env.local to git
+# 3. In production, use secure environment variable management
+# 4. Generate strong random values for JWT_SECRET
+# 5. Keep all credentials secure and private
+
