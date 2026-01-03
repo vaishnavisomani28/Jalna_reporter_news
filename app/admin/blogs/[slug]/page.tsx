@@ -70,6 +70,7 @@ export default function EditBlogPage() {
       }, 100);
       return () => clearTimeout(timer);
     }
+    return undefined;
   }, [formData.content]);
 
   const fetchBlog = async () => {
@@ -398,6 +399,7 @@ export default function EditBlogPage() {
               ],
             }}
           />
+          </div>
           <p className="text-sm text-gray-500 mt-2">
             💡 Tip: Use the toolbar to format text, add links, and insert images. You can also paste image URLs directly.
           </p>
