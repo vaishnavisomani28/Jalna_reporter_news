@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import dynamic from 'next/dynamic';
 import axios from 'axios';
@@ -16,7 +16,8 @@ export default function EditBlogPage() {
   const slug = (params && params.slug ? (params.slug as string) : '') || '';
   const fileInputRef = useRef<HTMLInputElement>(null);
   const featuredImageInputRef = useRef<HTMLInputElement>(null);
-  const quillRef = useRef<any>(null);
+  const quillEditorRef = useRef<any>(null);
+  const quillContainerRef = useRef<HTMLDivElement>(null);
 
   const [formData, setFormData] = useState({
     title: '',
@@ -54,6 +55,22 @@ export default function EditBlogPage() {
       fetchBlog();
     }
   }, [slug, params, router]);
+
+  // Get Quill editor instance after mount
+  useEffect(() => {
+    if (quillContainerRef.current && !quillEditorRef.current) {
+      const timer = setTimeout(() => {
+        const quillEditor = quillContainerRef.current?.querySelector('.ql-editor');
+        if (quillEditor) {
+          const quill = (quillEditor as any).__quill;
+          if (quill) {
+            quillEditorRef.current = quill;
+          }
+        }
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [formData.content]);
 
   const fetchBlog = async () => {
     if (!slug || slug.trim() === '') {
@@ -121,11 +138,10 @@ export default function EditBlogPage() {
       const imageUrl = response.data.url;
 
       // Insert image into Quill editor
-      if (quillRef.current) {
-        const quill = quillRef.current.getEditor();
-        const range = quill.getSelection(true);
-        quill.insertEmbed(range.index, 'image', imageUrl);
-        quill.setSelection(range.index + 1);
+      if (quillEditorRef.current) {
+        const range = quillEditorRef.current.getSelection(true);
+        quillEditorRef.current.insertEmbed(range.index, 'image', imageUrl);
+        quillEditorRef.current.setSelection(range.index + 1);
       }
 
       toast.success('Image uploaded successfully!');
@@ -365,13 +381,13 @@ export default function EditBlogPage() {
               Click to upload images directly into your article content
             </p>
           </div>
-          <ReactQuill
-            ref={quillRef}
-            theme="snow"
-            value={formData.content}
-            onChange={(value) => setFormData({ ...formData, content: value })}
-            className="bg-white"
-            modules={{
+          <div ref={quillContainerRef}>
+            <ReactQuill
+              theme="snow"
+              value={formData.content}
+              onChange={(value) => setFormData({ ...formData, content: value })}
+              className="bg-white"
+              modules={{
               toolbar: [
                 [{ header: [1, 2, 3, false] }],
                 ['bold', 'italic', 'underline', 'strike'],
