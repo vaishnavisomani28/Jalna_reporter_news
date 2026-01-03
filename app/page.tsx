@@ -30,10 +30,21 @@ async function getVideos() {
     });
     if (!res.ok) {
       console.error('Videos API error:', res.status, res.statusText);
-      return { videos: [], liveStream: null };
+      // Even if there's an error, try to parse the response for error message
+      try {
+        const errorData = await res.json();
+        return { videos: [], liveStream: null, error: errorData.error };
+      } catch {
+        return { videos: [], liveStream: null };
+      }
     }
     const data = await res.json();
-    return data;
+    // Always return videos array even if there's an error in the response
+    return {
+      videos: data.videos || [],
+      liveStream: data.liveStream || null,
+      error: data.error,
+    };
   } catch (error) {
     console.error('Error fetching videos:', error);
     return { videos: [], liveStream: null };

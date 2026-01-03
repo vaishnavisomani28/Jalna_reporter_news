@@ -34,13 +34,20 @@ export async function GET(request: NextRequest) {
       await connectDB();
     } catch (error) {
       logger.error('MongoDB connection failed for videos', error instanceof Error ? error : undefined);
+      // Return empty data with 200 status to prevent page crashes
       return NextResponse.json(
         { 
           videos: [], 
           liveStream: null,
+          pagination: {
+            page: 1,
+            limit: 12,
+            total: 0,
+            pages: 0,
+          },
           error: 'Database connection failed. Please check MONGODB_URI in environment variables.',
         },
-        { status: 503 }
+        { status: 200 }
       );
     }
 

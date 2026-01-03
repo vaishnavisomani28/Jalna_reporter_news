@@ -69,6 +69,16 @@ export async function GET(
     logger.error('Error fetching blog', error instanceof Error ? error : undefined, {
       slug: params.slug,
     });
+    
+    // Check if it's a database connection error
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    if (errorMessage.includes('Supabase') || errorMessage.includes('supabase') || errorMessage.includes('connection')) {
+      return NextResponse.json(
+        { error: 'Database connection failed. Please check Supabase configuration.' },
+        { status: 503 }
+      );
+    }
+    
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
