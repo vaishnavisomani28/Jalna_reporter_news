@@ -243,9 +243,10 @@ export async function PUT(
       );
     }
     
+    // Return 400 instead of 500 for better error handling
     return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
+      { error: 'Failed to update blog. Please try again.' },
+      { status: 400 }
     );
   }
 }
@@ -293,9 +294,10 @@ export async function DELETE(
     logger.error('Error deleting blog', error instanceof Error ? error : undefined, {
       slug: params.slug,
     });
+    // Return 400 instead of 500 for better error handling
     return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
+      { error: 'Failed to delete blog. Please try again.' },
+      { status: 400 }
     );
   }
 }

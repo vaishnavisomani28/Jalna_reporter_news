@@ -214,13 +214,14 @@ export const POST = requireAuth(async (request: NextRequest) => {
     if (errorMessage.includes('Supabase') || errorMessage.includes('supabase')) {
       return NextResponse.json(
         { error: 'Database connection failed. Please check Supabase configuration.' },
-        { status: 500 }
+        { status: 400 }
       );
     }
     
+    // Return 400 instead of 500 for better error handling
     return NextResponse.json(
       { error: `Failed to create blog: ${errorMessage}` },
-      { status: 500 }
+      { status: 400 }
     );
   }
 });
