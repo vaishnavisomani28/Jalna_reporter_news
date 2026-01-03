@@ -34,6 +34,51 @@
 
 ---
 
+## ✅ Step 1.5: Organization Create Karo (Important!)
+
+**⚠️ Important:** Agar aapko "To get started, create an organization" page dikh raha hai, to pehle organization create karna hoga.
+
+### 1.5.1 Organization Create
+
+1. **"Create an Organization" Button:**
+   - Page me **"Create an Organization"** (green button) dikhega
+   - Click karo
+
+2. **Organization Details Fill:**
+   - **Organization Name:** 
+     - Example: `Jalna Reporter News`
+     - Ya koi bhi name (aapka project name)
+   - **Cloud Provider:**
+     - ✅ **AWS** (Default - Recommended)
+     - Ya koi bhi select karo
+   - **Organization Owner:**
+     - Aapka email automatically select hoga
+     - Ya change kar sakte ho
+
+3. **Click "Create Organization"**
+   - Organization create ho jayega
+   - Dashboard me redirect ho jayega
+
+### 1.5.2 Project Create (Optional but Recommended)
+
+1. **After Organization Created:**
+   - "Create a Project" screen dikhega
+   - Ya manually project create karo
+
+2. **Project Details:**
+   - **Project Name:** 
+     - Example: `Jalna Reporter News`
+     - Ya koi bhi name
+   - **Click "Create Project"**
+
+3. **Skip Option:**
+   - Agar skip karna ho, to skip kar sakte ho
+   - Baad me bhi project create kar sakte ho
+
+**Note:** Organization aur Project create karne ke baad hi cluster create kar sakte ho.
+
+---
+
 ## ✅ Step 2: Free Cluster Create Karo
 
 ### 2.1 Dashboard me Cluster Create Option Find Karo
@@ -411,6 +456,8 @@ Environments: Production, Preview, Development
 Setup complete hone ke baad verify karo:
 
 - [ ] MongoDB Atlas account created
+- [ ] Organization created (if required)
+- [ ] Project created (optional)
 - [ ] Free cluster created (M0)
 - [ ] Database user created (username + password saved)
 - [ ] Network access configured (IP whitelisted)
