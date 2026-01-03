@@ -56,8 +56,9 @@ class MemoryStore {
 let ratelimit: Ratelimit;
 let memoryStore: MemoryStore | null = null;
 
-// Always use in-memory store for now (Redis is optional)
-// This prevents "evalsha" errors when Redis is not properly configured
+// Simple in-memory rate limiting (no Upstash dependency when Redis not available)
+let useUpstash = false;
+
 try {
   if (process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN) {
     // Try to use Upstash Redis if available
@@ -72,45 +73,72 @@ try {
         limiter: Ratelimit.slidingWindow(10, '10 s'), // 10 requests per 10 seconds
         analytics: true,
       });
+      useUpstash = true;
     } catch (redisError) {
-      // If Redis fails, fall back to memory
-      console.warn('Redis connection failed, using in-memory rate limiting');
+      // If Redis fails, use simple memory store
+      console.warn('Redis connection failed, using simple in-memory rate limiting');
       memoryStore = new MemoryStore();
-      ratelimit = new Ratelimit({
-        store: memoryStore,
-        limiter: Ratelimit.slidingWindow(10, '10 s'),
-        analytics: true,
-      });
+      useUpstash = false;
     }
   } else {
-    // Use in-memory storage (default)
+    // Use simple in-memory storage (default)
     memoryStore = new MemoryStore();
-    ratelimit = new Ratelimit({
-      store: memoryStore,
-      limiter: Ratelimit.slidingWindow(10, '10 s'),
-      analytics: true,
-    });
+    useUpstash = false;
   }
 } catch (error) {
-  // Final fallback - always use memory store
-  console.warn('Rate limiter initialization failed, using in-memory fallback');
+  // Final fallback - use simple memory store
+  console.warn('Rate limiter initialization failed, using simple in-memory fallback');
   memoryStore = new MemoryStore();
-  ratelimit = new Ratelimit({
-    store: memoryStore,
-    limiter: Ratelimit.slidingWindow(10, '10 s'),
-    analytics: true,
-  });
+  useUpstash = false;
 }
 
 export async function checkRateLimit(identifier: string) {
   try {
-    const { success, limit, remaining, reset } = await ratelimit.limit(identifier);
-    return {
-      success,
-      limit,
-      remaining,
-      reset,
-    };
+    if (useUpstash && ratelimit) {
+      // Use Upstash Ratelimit if available
+      const { success, limit, remaining, reset } = await ratelimit.limit(identifier);
+      return {
+        success,
+        limit,
+        remaining,
+        reset,
+      };
+    } else if (memoryStore) {
+      // Use simple in-memory rate limiting
+      const now = Date.now();
+      const windowMs = 10000; // 10 seconds
+      const maxRequests = 10;
+      const key = `ratelimit:${identifier}`;
+      
+      const count = await memoryStore.get(key);
+      const reset = now + windowMs;
+      
+      if (!count || count < maxRequests) {
+        await memoryStore.incr(key, reset);
+        const newCount = await memoryStore.get(key) || 1;
+        return {
+          success: true,
+          limit: maxRequests,
+          remaining: Math.max(0, maxRequests - newCount),
+          reset,
+        };
+      } else {
+        return {
+          success: false,
+          limit: maxRequests,
+          remaining: 0,
+          reset,
+        };
+      }
+    } else {
+      // Fallback - allow all requests
+      return {
+        success: true,
+        limit: 10,
+        remaining: 10,
+        reset: Date.now() + 10000,
+      };
+    }
   } catch (error) {
     // If rate limiting fails, allow the request (fail open)
     console.error('Rate limit check failed:', error);
