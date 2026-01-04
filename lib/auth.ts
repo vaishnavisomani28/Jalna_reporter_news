@@ -13,7 +13,7 @@ export async function getAuthUser(request: NextRequest) {
 }
 
 export function requireAuth(
-  handler: (request: NextRequest, user: any, context?: any) => Promise<Response>
+  handler: (request: NextRequest, context?: any) => Promise<Response>
 ) {
   return async (request: NextRequest, context?: any) => {
     const user = await getAuthUser(request);
@@ -25,7 +25,8 @@ export function requireAuth(
       );
     }
 
-    return handler(request, user, context);
+    // Pass context (which contains params) to the handler
+    return handler(request, context);
   };
 }
 
