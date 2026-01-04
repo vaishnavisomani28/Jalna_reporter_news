@@ -3,7 +3,7 @@ import dynamicImport from 'next/dynamic';
 import ShareButtons from '@/components/ShareButtons';
 import { formatDate } from '@/lib/utils';
 import { notFound } from 'next/navigation';
-import DOMPurify from 'isomorphic-dompurify';
+import SanitizedContent from '@/components/SanitizedContent';
 
 // Force dynamic rendering
 export const dynamic = 'force-dynamic';
@@ -126,9 +126,9 @@ export default async function BlogDetailPage({
           </div>
         )}
 
-        <div
+        <SanitizedContent
+          html={blog.content}
           className="prose max-w-none mb-8"
-          dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(blog.content) }}
         />
 
         <ShareButtons url={`/blogs/${blog.slug}`} title={blog.title} />
