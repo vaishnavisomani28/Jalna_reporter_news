@@ -24,6 +24,9 @@ export const metadata: Metadata = {
     description: 'Latest news, videos, and articles',
     type: 'website',
   },
+  other: {
+    'google-adsense-account': 'ca-pub-5818301035943442',
+  },
 };
 
 export default function RootLayout({
