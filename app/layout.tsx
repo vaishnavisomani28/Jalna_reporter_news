@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
+import Script from 'next/script';
 import './globals.css';
 import { Toaster } from 'react-hot-toast';
 import Header from '@/components/Header';
@@ -33,6 +34,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
+        <Script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5818301035943442"
+          crossOrigin="anonymous"
+          strategy="afterInteractive"
+        />
         <ErrorBoundary>
           <Header />
           <main className="min-h-screen">{children}</main>
