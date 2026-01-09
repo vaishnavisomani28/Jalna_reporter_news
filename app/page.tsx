@@ -4,7 +4,6 @@ import VideoCard from '@/components/VideoCard';
 import BlogCard from '@/components/BlogCard';
 import LiveStreamBanner from '@/components/LiveStreamBanner';
 import TopCarousel from '@/components/TopCarousel';
-import HomeWriteButton from '@/components/HomeWriteButton';
 
 // Force dynamic rendering to avoid build timeout
 export const dynamic = 'force-dynamic';
@@ -80,7 +79,6 @@ export default async function HomePage() {
       <TopCarousel />
       
       <div className="container mx-auto px-4 py-8">
-        <HomeWriteButton />
         {/* Live Stream Banner - Always show if live stream is available */}
         {liveStream && liveStream.videoId && (
           <LiveStreamBanner video={liveStream} />
