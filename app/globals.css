@@ -4,6 +4,20 @@
 
 body {
   @apply bg-white text-gray-900;
+  font-size: 16px; /* Base font size */
+}
+
+/* Responsive font sizes */
+@media (min-width: 640px) {
+  body {
+    font-size: 17px; /* Slightly larger on tablets */
+  }
+}
+
+@media (min-width: 1024px) {
+  body {
+    font-size: 18px; /* Larger on desktop */
+  }
 }
 
 /* Quill Editor Styles */

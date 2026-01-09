@@ -26,16 +26,16 @@ export default function Logo() {
     <Link href="/" className="flex items-center">
       <div className="relative">
         {/* JALNA - Orange banner */}
-        <div className="bg-orange-500 border-2 border-black transform -skew-x-12 px-4 py-1 mb-[-2px]">
-          <span className="text-white font-bold text-lg block transform skew-x-12">JALNA</span>
+        <div className="bg-orange-500 border-2 border-black transform -skew-x-12 px-2 py-0.5 md:px-4 md:py-1 mb-[-2px]">
+          <span className="text-white font-bold text-sm md:text-lg block transform skew-x-12">JALNA</span>
         </div>
         {/* REPORTER - Red banner */}
-        <div className="bg-red-600 border-2 border-black transform -skew-x-12 px-4 py-1 mb-[-2px]">
-          <span className="text-white font-bold text-lg block transform skew-x-12">REPORTER</span>
+        <div className="bg-red-600 border-2 border-black transform -skew-x-12 px-2 py-0.5 md:px-4 md:py-1 mb-[-2px]">
+          <span className="text-white font-bold text-sm md:text-lg block transform skew-x-12">REPORTER</span>
         </div>
         {/* NEWS - Large gray text */}
-        <div className="mt-1">
-          <span className="text-gray-700 font-bold text-2xl">NEWS</span>
+        <div className="mt-0.5 md:mt-1">
+          <span className="text-gray-700 font-bold text-lg md:text-2xl">NEWS</span>
         </div>
       </div>
     </Link>

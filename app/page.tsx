@@ -87,8 +87,8 @@ export default async function HomePage() {
         <section className="mb-12">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 mb-2">Latest Articles</h2>
-            <p className="text-gray-600">Read our latest news and articles</p>
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-2">Latest Articles</h2>
+            <p className="text-base md:text-lg text-gray-600">Read our latest news and articles</p>
           </div>
           <Link
             href="/blogs"
@@ -106,8 +106,8 @@ export default async function HomePage() {
           </div>
         ) : (
           <div className="bg-gray-50 rounded-lg p-12 text-center">
-            <p className="text-gray-600 text-lg">No articles available at the moment.</p>
-            <p className="text-gray-500 text-sm mt-2">Check back soon for new articles!</p>
+            <p className="text-gray-600 text-base md:text-lg">No articles available at the moment.</p>
+            <p className="text-gray-500 text-sm md:text-base mt-2">Check back soon for new articles!</p>
           </div>
         )}
         <div className="mt-6 text-center md:hidden">
@@ -124,8 +124,8 @@ export default async function HomePage() {
       <section className="mb-12">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 mb-2">Latest Videos</h2>
-            <p className="text-gray-600">Watch our latest content from YouTube</p>
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-2">Latest Videos</h2>
+            <p className="text-base md:text-lg text-gray-600">Watch our latest content from YouTube</p>
           </div>
           <Link
             href="/videos"
@@ -143,8 +143,8 @@ export default async function HomePage() {
           </div>
         ) : (
           <div className="bg-gray-50 rounded-lg p-12 text-center">
-            <p className="text-gray-600 text-lg">No videos available at the moment.</p>
-            <p className="text-gray-500 text-sm mt-2">Videos will appear here once fetched from YouTube.</p>
+            <p className="text-gray-600 text-base md:text-lg">No videos available at the moment.</p>
+            <p className="text-gray-500 text-sm md:text-base mt-2">Videos will appear here once fetched from YouTube.</p>
           </div>
         )}
         <div className="mt-6 text-center md:hidden">
