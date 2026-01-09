@@ -12,7 +12,8 @@
     "fetch-videos": "node scripts/fetch-videos.js",
     "create-sample-blog": "node scripts/create-sample-blog.js",
     "check-data": "node scripts/check-data.js",
-    "fix-empty-slugs": "node scripts/fix-empty-slugs.js"
+    "fix-empty-slugs": "node scripts/fix-empty-slugs.js",
+    "test-email": "node scripts/test-email.js"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.89.0",

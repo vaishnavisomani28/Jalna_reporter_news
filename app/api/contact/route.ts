@@ -102,21 +102,42 @@ export async function POST(request: NextRequest) {
       replyTo: sanitizedEmail,
     };
 
-    // Send email
-    await transporter.sendMail(mailOptions);
+    // Verify connection before sending
+    await transporter.verify();
 
-    logger.info('Contact form email sent successfully', { email: sanitizedEmail });
+    // Send email
+    const info = await transporter.sendMail(mailOptions);
+
+    logger.info('Contact form email sent successfully', { 
+      email: sanitizedEmail,
+      messageId: info.messageId 
+    });
 
     return NextResponse.json(
       { message: 'Email sent successfully' },
       { status: 200 }
     );
   } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    
     logger.error('Error sending contact form email', error instanceof Error ? error : undefined, {
       endpoint: '/api/contact',
+      errorMessage,
     });
+
+    // Provide more specific error messages
+    let userMessage = 'Failed to send email. Please try again later.';
+    
+    if (errorMessage.includes('Invalid login') || errorMessage.includes('authentication')) {
+      userMessage = 'Email authentication failed. Please check EMAIL_USER and EMAIL_PASSWORD in environment variables. Make sure you are using Gmail App Password, not regular password.';
+    } else if (errorMessage.includes('Connection') || errorMessage.includes('timeout')) {
+      userMessage = 'Email service connection failed. Please check your internet connection and try again.';
+    } else if (errorMessage.includes('ENOTFOUND') || errorMessage.includes('getaddrinfo')) {
+      userMessage = 'Email service host not found. Please check your email configuration.';
+    }
+
     return NextResponse.json(
-      { error: 'Failed to send email. Please try again later.' },
+      { error: userMessage },
       { status: 500 }
     );
   }
