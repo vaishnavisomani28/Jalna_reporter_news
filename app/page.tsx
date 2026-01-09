@@ -89,43 +89,6 @@ export default async function HomePage() {
         <section className="mb-12">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 mb-2">Latest Videos</h2>
-            <p className="text-gray-600">Watch our latest content from YouTube</p>
-          </div>
-          <Link
-            href="/videos"
-            className="hidden md:flex items-center space-x-2 bg-primary text-white px-6 py-2 rounded-lg hover:bg-primary-dark transition-colors font-medium"
-          >
-            <span>View All</span>
-            <span>→</span>
-          </Link>
-        </div>
-        {videos.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {videos.slice(0, 6).map((video: any) => (
-              <VideoCard key={video._id} video={video} />
-            ))}
-          </div>
-        ) : (
-          <div className="bg-gray-50 rounded-lg p-12 text-center">
-            <p className="text-gray-600 text-lg">No videos available at the moment.</p>
-            <p className="text-gray-500 text-sm mt-2">Videos will appear here once fetched from YouTube.</p>
-          </div>
-        )}
-        <div className="mt-6 text-center md:hidden">
-          <Link
-            href="/videos"
-            className="inline-flex items-center space-x-2 bg-primary text-white px-6 py-2 rounded-lg hover:bg-primary-dark transition-colors font-medium"
-          >
-            <span>View All Videos</span>
-            <span>→</span>
-          </Link>
-        </div>
-      </section>
-
-      <section className="mb-12">
-        <div className="flex items-center justify-between mb-6">
-          <div>
             <h2 className="text-3xl font-bold text-gray-900 mb-2">Latest Articles</h2>
             <p className="text-gray-600">Read our latest news and articles</p>
           </div>
@@ -155,6 +118,43 @@ export default async function HomePage() {
             className="inline-flex items-center space-x-2 bg-primary text-white px-6 py-2 rounded-lg hover:bg-primary-dark transition-colors font-medium"
           >
             <span>View All Articles</span>
+            <span>→</span>
+          </Link>
+        </div>
+      </section>
+
+      <section className="mb-12">
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h2 className="text-3xl font-bold text-gray-900 mb-2">Latest Videos</h2>
+            <p className="text-gray-600">Watch our latest content from YouTube</p>
+          </div>
+          <Link
+            href="/videos"
+            className="hidden md:flex items-center space-x-2 bg-primary text-white px-6 py-2 rounded-lg hover:bg-primary-dark transition-colors font-medium"
+          >
+            <span>View All</span>
+            <span>→</span>
+          </Link>
+        </div>
+        {videos.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {videos.slice(0, 6).map((video: any) => (
+              <VideoCard key={video._id} video={video} />
+            ))}
+          </div>
+        ) : (
+          <div className="bg-gray-50 rounded-lg p-12 text-center">
+            <p className="text-gray-600 text-lg">No videos available at the moment.</p>
+            <p className="text-gray-500 text-sm mt-2">Videos will appear here once fetched from YouTube.</p>
+          </div>
+        )}
+        <div className="mt-6 text-center md:hidden">
+          <Link
+            href="/videos"
+            className="inline-flex items-center space-x-2 bg-primary text-white px-6 py-2 rounded-lg hover:bg-primary-dark transition-colors font-medium"
+          >
+            <span>View All Videos</span>
             <span>→</span>
           </Link>
         </div>

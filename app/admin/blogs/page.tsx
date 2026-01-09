@@ -111,7 +111,7 @@ export default function AdminBlogsPage() {
                     {new Date(blog.createdAt).toLocaleDateString()}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                    {blog.slug ? (
+                    {blog.slug && blog.slug.trim() !== '' && blog.slug.toLowerCase() !== 'empty' ? (
                       <Link
                         href={`/admin/blogs/${encodeURIComponent(blog.slug)}`}
                         className="text-primary hover:text-primary-dark mr-4 font-semibold hover:underline"
@@ -119,7 +119,7 @@ export default function AdminBlogsPage() {
                         ✏️ Edit
                       </Link>
                     ) : (
-                      <span className="text-gray-400 mr-4" title="Slug missing - cannot edit">
+                      <span className="text-gray-400 mr-4 cursor-not-allowed" title="Slug missing or invalid - cannot edit. Please fix slug first.">
                         ✏️ Edit
                       </span>
                     )}

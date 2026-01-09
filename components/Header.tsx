@@ -65,9 +65,6 @@ export default function Header() {
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <Logo />
-            <h1 className="text-2xl font-bold text-primary hidden sm:block">
-              Jalna Reporter News
-            </h1>
           </div>
           <nav className="hidden md:flex items-center space-x-6">
             {navLinks.map((link) => (
