@@ -173,7 +173,7 @@ export const POST = requireAuth(async (request: NextRequest) => {
 
     // Final validation: ensure slug is not empty
     if (!slug || slug.trim() === '') {
-      logger.error('Generated slug is empty', { title: sanitizedTitle });
+      logger.error('Generated slug is empty', undefined, { title: sanitizedTitle });
       return NextResponse.json(
         { error: 'Unable to generate a valid slug from the title. Please use a title with at least some English characters or numbers.' },
         { status: 400 }

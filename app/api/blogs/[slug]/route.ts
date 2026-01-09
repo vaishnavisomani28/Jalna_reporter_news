@@ -41,7 +41,7 @@ export async function GET(
     
     // Validate slug is not empty
     if (!decodedSlug || decodedSlug.trim() === '' || decodedSlug.toLowerCase() === 'empty') {
-      logger.error('Invalid slug in GET request', { slug: params.slug, decodedSlug });
+      logger.error('Invalid slug in GET request', undefined, { slug: params.slug, decodedSlug });
       return NextResponse.json(
         { error: 'Invalid blog URL. Blog slug is missing or invalid.' },
         { status: 404 }
@@ -228,7 +228,7 @@ export async function PUT(
       
       // Final validation: ensure slug is not empty
       if (!newSlug || newSlug.trim() === '') {
-        logger.error('Generated slug is empty', { title: sanitizedTitle });
+        logger.error('Generated slug is empty', undefined, { title: sanitizedTitle });
         return NextResponse.json(
           { error: 'Unable to generate a valid slug from the title. Please use a title with at least some English characters or numbers.' },
           { status: 400 }
