@@ -54,21 +54,43 @@ export async function GET(request: NextRequest) {
     const blogsData = result.data || [];
     const total = result.count || 0;
 
-    // Transform to match expected format and filter out blogs with empty/invalid slugs
-    const formattedBlogs = blogsData
-      .filter((blog: any) => blog.slug && blog.slug.trim() !== '' && blog.slug.toLowerCase() !== 'empty')
-      .map((blog: any) => ({
-        _id: blog.id,
-        title: blog.title,
-        slug: blog.slug,
-        content: blog.content,
-        excerpt: blog.excerpt,
-        featuredImage: blog.featured_image,
-        published: blog.published,
-        author: blog.author,
-        createdAt: blog.created_at,
-        updatedAt: blog.updated_at,
-      }));
+    // Transform to match expected format and auto-fix blogs with empty/invalid slugs
+    const formattedBlogs = await Promise.all(
+      blogsData.map(async (blog: any) => {
+        // Auto-fix empty or "EMPTY" slugs
+        let slug = blog.slug;
+        const needsFix = !slug || slug.trim() === '' || slug.toLowerCase() === 'empty';
+        
+        if (needsFix && blog.title) {
+          // Generate new slug from title
+          const { generateSlug } = await import('@/lib/utils');
+          slug = generateSlug(blog.title);
+          
+          // Ensure slug is not empty
+          if (!slug || slug.trim() === '') {
+            slug = `blog-${Date.now()}-${Math.random().toString(36).substring(7)}`;
+          }
+          
+          // Update slug in database by ID (async, don't wait)
+          blogDb.updateById(blog.id, { slug }).catch((err) => {
+            logger.error('Failed to auto-fix slug', err instanceof Error ? err : undefined, { blogId: blog.id });
+          });
+        }
+        
+        return {
+          _id: blog.id,
+          title: blog.title,
+          slug: slug || `blog-${blog.id}`,
+          content: blog.content,
+          excerpt: blog.excerpt,
+          featuredImage: blog.featured_image,
+          published: blog.published,
+          author: blog.author,
+          createdAt: blog.created_at,
+          updatedAt: blog.updated_at,
+        };
+      })
+    );
 
     return NextResponse.json({
       blogs: formattedBlogs,

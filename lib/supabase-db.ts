@@ -104,6 +104,18 @@ export const blogDb = {
     return data;
   },
 
+  async updateById(id: string, updates: Partial<Blog>) {
+    const { data, error } = await supabase
+      .from('blogs')
+      .update({ ...updates, updated_at: new Date().toISOString() })
+      .eq('id', id)
+      .select()
+      .single();
+    
+    if (error) throw error;
+    return data;
+  },
+
   async delete(slug: string) {
     const { error } = await supabase
       .from('blogs')
