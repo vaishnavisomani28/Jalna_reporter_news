@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import axios from 'axios';
 import Link from 'next/link';
+import { useInactivityLogout } from '@/hooks/useInactivityLogout';
 
 export default function AdminLayout({
   children,
@@ -45,6 +46,9 @@ export default function AdminLayout({
       window.location.href = '/';
     }
   };
+
+  // Auto-logout after 5 minutes of inactivity
+  useInactivityLogout(isAuthenticated, handleLogout);
 
   if (isLoading) {
     return (

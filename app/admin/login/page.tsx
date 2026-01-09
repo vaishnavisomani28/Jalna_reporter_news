@@ -1,9 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import { useInactivityLogout } from '@/hooks/useInactivityLogout';
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -12,6 +13,38 @@ export default function AdminLoginPage() {
     password: '',
   });
   const [isLoading, setIsLoading] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    // Check if user is already logged in
+    const checkAuth = async () => {
+      try {
+        const res = await axios.get('/api/auth/verify');
+        if (res.data.authenticated) {
+          setIsAuthenticated(true);
+        }
+      } catch {
+        // Not authenticated, ignore
+      }
+    };
+    checkAuth();
+  }, []);
+
+  const handleLogout = async () => {
+    try {
+      await axios.post('/api/auth/logout');
+      setIsAuthenticated(false);
+      toast.success('Logged out due to inactivity');
+      window.location.href = '/';
+    } catch (error) {
+      console.error('Logout error:', error);
+      setIsAuthenticated(false);
+      window.location.href = '/';
+    }
+  };
+
+  // Auto-logout after 5 minutes of inactivity (only if already logged in)
+  useInactivityLogout(isAuthenticated, handleLogout);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
