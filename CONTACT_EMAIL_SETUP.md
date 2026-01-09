@@ -13,7 +13,7 @@ All contact form submissions will be sent to this email.
 ### Step 1: Get Gmail App Password
 
 1. **Go to:** https://myaccount.google.com/apppasswords
-2. **Sign in** with: somani.vaishnavi28@gmail.com
+2. **Sign in** with: jalnareporter21@gmail.com
 3. **Select app:** Mail
 4. **Select device:** Other (Custom name)
 5. **Enter name:** Jalna Reporter News
@@ -25,7 +25,7 @@ All contact form submissions will be sent to this email.
 Open `.env.local` file and add:
 
 ```env
-EMAIL_USER=somani.vaishnavi28@gmail.com
+EMAIL_USER= jalnareporter21@gmail.com
 EMAIL_PASSWORD=your-16-character-app-password-here
 ```
 
