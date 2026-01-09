@@ -5,6 +5,7 @@ import { blogSchema, sanitizeInput } from '@/lib/validation';
 import { checkRateLimit } from '@/lib/rate-limit';
 import { logger } from '@/lib/logger';
 import { requireCSRF } from '@/lib/csrf';
+import { generateSlug } from '@/lib/utils';
 
 export async function GET(
   request: NextRequest,
@@ -38,9 +39,31 @@ export async function GET(
       decodedSlug = params.slug;
     }
     
+    // Validate slug is not empty
+    if (!decodedSlug || decodedSlug.trim() === '' || decodedSlug.toLowerCase() === 'empty') {
+      logger.error('Invalid slug in GET request', { slug: params.slug, decodedSlug });
+      return NextResponse.json(
+        { error: 'Invalid blog URL. Blog slug is missing or invalid.' },
+        { status: 404 }
+      );
+    }
+    
     let blog;
     try {
+      // First try to get published blog
       blog = await blogDb.getBySlug(decodedSlug, true);
+      
+      // If not found and slug might be empty, try to find by ID or check for empty slugs
+      if (!blog) {
+        // Try without published filter to see if blog exists but is unpublished
+        blog = await blogDb.getBySlug(decodedSlug, false);
+        if (blog && !blog.published) {
+          return NextResponse.json(
+            { error: 'Blog not found or not published yet.' },
+            { status: 404 }
+          );
+        }
+      }
     } catch (dbError) {
       logger.error('Supabase connection error in blog GET', dbError instanceof Error ? dbError : undefined);
       // Return 404 instead of 503 to prevent frontend errors
@@ -172,13 +195,13 @@ export async function PUT(
       const sanitizedTitle = sanitizeInput(title);
       updates.title = sanitizedTitle;
       
-      // Generate new slug with collision handling
-      let baseSlug = sanitizedTitle
-        .toLowerCase()
-        .trim()
-        .replace(/[^\w\s-]/g, '')
-        .replace(/[\s_-]+/g, '-')
-        .replace(/^-+|-+$/g, '');
+      // Generate new slug with collision handling using improved slug generation
+      let baseSlug = generateSlug(sanitizedTitle);
+      
+      // Ensure slug is not empty
+      if (!baseSlug || baseSlug.trim() === '') {
+        baseSlug = `blog-${Date.now()}`;
+      }
       
       let newSlug = baseSlug;
       let counter = 1;
@@ -201,6 +224,15 @@ export async function PUT(
             { status: 400 }
           );
         }
+      }
+      
+      // Final validation: ensure slug is not empty
+      if (!newSlug || newSlug.trim() === '') {
+        logger.error('Generated slug is empty', { title: sanitizedTitle });
+        return NextResponse.json(
+          { error: 'Unable to generate a valid slug from the title. Please use a title with at least some English characters or numbers.' },
+          { status: 400 }
+        );
       }
       
       updates.slug = newSlug;

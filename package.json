@@ -11,7 +11,8 @@
     "get-channel-id": "node scripts/get-channel-id.js",
     "fetch-videos": "node scripts/fetch-videos.js",
     "create-sample-blog": "node scripts/create-sample-blog.js",
-    "check-data": "node scripts/check-data.js"
+    "check-data": "node scripts/check-data.js",
+    "fix-empty-slugs": "node scripts/fix-empty-slugs.js"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.89.0",

@@ -6,6 +6,7 @@ import { checkRateLimit } from '@/lib/rate-limit';
 import { logger } from '@/lib/logger';
 import { sanitizeInput } from '@/lib/validation';
 import { requireCSRF } from '@/lib/csrf';
+import { generateSlug } from '@/lib/utils';
 
 export async function GET(request: NextRequest) {
   try {
@@ -53,19 +54,21 @@ export async function GET(request: NextRequest) {
     const blogsData = result.data || [];
     const total = result.count || 0;
 
-    // Transform to match expected format
-    const formattedBlogs = blogsData.map((blog: any) => ({
-      _id: blog.id,
-      title: blog.title,
-      slug: blog.slug,
-      content: blog.content,
-      excerpt: blog.excerpt,
-      featuredImage: blog.featured_image,
-      published: blog.published,
-      author: blog.author,
-      createdAt: blog.created_at,
-      updatedAt: blog.updated_at,
-    }));
+    // Transform to match expected format and filter out blogs with empty/invalid slugs
+    const formattedBlogs = blogsData
+      .filter((blog: any) => blog.slug && blog.slug.trim() !== '' && blog.slug.toLowerCase() !== 'empty')
+      .map((blog: any) => ({
+        _id: blog.id,
+        title: blog.title,
+        slug: blog.slug,
+        content: blog.content,
+        excerpt: blog.excerpt,
+        featuredImage: blog.featured_image,
+        published: blog.published,
+        author: blog.author,
+        createdAt: blog.created_at,
+        updatedAt: blog.updated_at,
+      }));
 
     return NextResponse.json({
       blogs: formattedBlogs,
@@ -141,13 +144,13 @@ export const POST = requireAuth(async (request: NextRequest) => {
       ? featuredImage.trim() 
       : undefined;
 
-    // Generate slug with collision handling
-    let baseSlug = sanitizedTitle
-      .toLowerCase()
-      .trim()
-      .replace(/[^\w\s-]/g, '')
-      .replace(/[\s_-]+/g, '-')
-      .replace(/^-+|-+$/g, '');
+    // Generate slug with collision handling using improved slug generation
+    let baseSlug = generateSlug(sanitizedTitle);
+    
+    // Ensure slug is not empty
+    if (!baseSlug || baseSlug.trim() === '') {
+      baseSlug = `blog-${Date.now()}`;
+    }
 
     let slug = baseSlug;
     let counter = 1;
@@ -166,6 +169,15 @@ export const POST = requireAuth(async (request: NextRequest) => {
           { status: 400 }
         );
       }
+    }
+
+    // Final validation: ensure slug is not empty
+    if (!slug || slug.trim() === '') {
+      logger.error('Generated slug is empty', { title: sanitizedTitle });
+      return NextResponse.json(
+        { error: 'Unable to generate a valid slug from the title. Please use a title with at least some English characters or numbers.' },
+        { status: 400 }
+      );
     }
 
     const blog = await blogDb.create({
