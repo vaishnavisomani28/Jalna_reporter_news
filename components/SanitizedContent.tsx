@@ -36,8 +36,14 @@ export default function SanitizedContent({ html, className = '' }: SanitizedCont
 
   return (
     <div
-      className={className}
+      className={`article-content-inner ${className}`}
+      lang="mr"
       dangerouslySetInnerHTML={{ __html: sanitizedHtml }}
+      style={{
+        wordBreak: 'break-word',
+        overflowWrap: 'break-word',
+        hyphens: 'auto',
+      }}
     />
   );
 }

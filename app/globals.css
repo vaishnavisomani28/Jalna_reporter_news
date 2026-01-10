@@ -2,22 +2,609 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  @apply bg-white text-gray-900;
-  font-size: 16px; /* Base font size */
+/* ============================================
+   TYPOGRAPHY SYSTEM - News Portal Style
+   Inspired by Lokmat, Indian Express, BBC
+   ============================================ */
+
+@layer base {
+  html {
+    font-size: clamp(16px, 1vw, 18px); /* Responsive base font size */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    @apply bg-white text-gray-900;
+    font-family: var(--font-inter), var(--font-mukta), system-ui, sans-serif;
+    font-size: clamp(16px, 1.125vw, 18px);
+    line-height: 1.75;
+    letter-spacing: -0.01em; /* Tighter letter spacing for better readability */
+  }
+
+  /* Marathi/Devanagari text optimization */
+  [lang="hi"], [lang="mr"], [lang="sa"] {
+    font-family: var(--font-noto-serif-devanagari), var(--font-mukta), var(--font-inter), sans-serif;
+    line-height: 1.8; /* Slightly more line-height for Devanagari */
+    letter-spacing: 0; /* Normal spacing for Devanagari */
+  }
 }
 
-/* Responsive font sizes */
-@media (min-width: 640px) {
-  body {
-    font-size: 17px; /* Slightly larger on tablets */
+/* ============================================
+   ARTICLE TYPOGRAPHY - Professional News Style
+   ============================================ */
+
+@layer components {
+  /* Article Container - Optimal Reading Width (News Portal Standard) */
+  .article-container {
+    max-width: 720px; /* Optimal reading width (matches Lokmat, Indian Express) */
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
   }
+
+  /* Article Title/Headline */
+  .article-title {
+    font-size: clamp(28px, 4vw, 40px);
+    line-height: 1.25;
+    font-weight: 700;
+    color: #1f2937; /* Slightly softer than pure black */
+    letter-spacing: -0.02em;
+    margin-bottom: clamp(1rem, 2vw, 1.5rem);
+    font-family: var(--font-inter), var(--font-mukta), system-ui, sans-serif;
+  }
+
+  /* Article Meta Info (Date, Author) */
+  .article-meta {
+    font-size: clamp(14px, 1.5vw, 16px);
+    line-height: 1.6;
+    color: #6b7280;
+    margin-bottom: clamp(1.5rem, 3vw, 2rem);
+    padding-bottom: clamp(1rem, 2vw, 1.5rem);
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  /* Article Content - Rich Text Styling */
+  .article-content {
+    font-size: clamp(17px, 1.25vw, 19px);
+    line-height: 1.85; /* Increased for better readability */
+    color: #374151;
+    letter-spacing: -0.005em;
+    font-family: var(--font-mukta), var(--font-inter), system-ui, sans-serif;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+  }
+
+  /* Enhanced Typography for Marathi Content */
+  .article-content [lang="hi"],
+  .article-content [lang="mr"],
+  .article-content [lang="sa"],
+  .article-content-inner[lang="mr"],
+  .article-content-inner[lang="hi"] {
+    font-family: var(--font-noto-serif-devanagari), var(--font-mukta), sans-serif;
+    line-height: 1.9; /* Even more line-height for Devanagari */
+    letter-spacing: 0.01em;
+  }
+
+  /* Auto-detect Devanagari characters and apply proper font */
+  .article-content,
+  .article-content-inner {
+    font-variant-ligatures: common-ligatures;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Better spacing for paragraphs containing Marathi */
+  .article-content p,
+  .article-content-inner p {
+    orphans: 3;
+    widows: 3;
+  }
+
+  /* Paragraph Spacing - Professional news style */
+  .article-content p,
+  .article-content-inner p {
+    margin-bottom: clamp(1.5rem, 3vw, 2rem); /* More spacing between paragraphs */
+    font-size: clamp(17px, 1.25vw, 19px);
+    line-height: 1.85;
+    text-align: left; /* Left-aligned for better readability, especially for Marathi */
+    word-spacing: 0.05em; /* Slightly more word spacing for better readability */
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Desktop: Justified text for English/Latin content, left for Devanagari */
+  @media (min-width: 1024px) {
+    .article-content p:not([lang="mr"]):not([lang="hi"]):not([lang="sa"]),
+    .article-content-inner p:not([lang="mr"]):not([lang="hi"]):not([lang="sa"]) {
+      text-align: justify;
+      text-align-last: left; /* Last line left-aligned for better appearance */
+    }
+  }
+
+  /* First paragraph - Lead paragraph style (slightly larger, more prominent) */
+  .article-content p:first-of-type,
+  .article-content-inner p:first-of-type {
+    font-size: clamp(18px, 1.75vw, 21px);
+    line-height: 1.9;
+    color: #1f2937;
+    font-weight: 400;
+    margin-bottom: clamp(1.75rem, 3.5vw, 2.5rem);
+    margin-top: 0; /* No top margin for first paragraph */
+    letter-spacing: -0.01em;
+  }
+
+  /* Drop cap effect for first letter (optional, can be enabled) */
+  .article-content p:first-of-type::first-letter,
+  .article-content-inner p:first-of-type::first-letter {
+    font-size: 3.5em;
+    line-height: 0.8;
+    float: left;
+    padding-right: 0.1em;
+    padding-top: 0.05em;
+    font-weight: 600;
+    color: #DC2626;
+  }
+
+  /* Disable drop cap for Devanagari (doesn't work well) */
+  .article-content[lang="mr"] p:first-of-type::first-letter,
+  .article-content[lang="hi"] p:first-of-type::first-letter,
+  .article-content-inner[lang="mr"] p:first-of-type::first-letter,
+  .article-content-inner[lang="hi"] p:first-of-type::first-letter {
+    font-size: inherit;
+    line-height: inherit;
+    float: none;
+    padding: 0;
+    font-weight: inherit;
+    color: inherit;
+  }
+
+  /* Headings in Article */
+  .article-content h1 {
+    font-size: clamp(28px, 3vw, 32px);
+    line-height: 1.3;
+    font-weight: 700;
+    margin-top: clamp(2rem, 4vw, 3rem);
+    margin-bottom: clamp(1rem, 2vw, 1.5rem);
+    color: #1f2937;
+  }
+
+  .article-content h2 {
+    font-size: clamp(24px, 2.5vw, 28px);
+    line-height: 1.35;
+    font-weight: 600;
+    margin-top: clamp(2rem, 3.5vw, 2.5rem);
+    margin-bottom: clamp(0.75rem, 1.5vw, 1rem);
+    color: #1f2937;
+  }
+
+  .article-content h3 {
+    font-size: clamp(20px, 2vw, 24px);
+    line-height: 1.4;
+    font-weight: 600;
+    margin-top: clamp(1.5rem, 3vw, 2rem);
+    margin-bottom: clamp(0.75rem, 1.5vw, 1rem);
+    color: #1f2937;
+  }
+
+  /* Lists */
+  .article-content ul,
+  .article-content ol {
+    margin-bottom: clamp(1.25rem, 2.5vw, 1.75rem);
+    padding-left: clamp(1.5rem, 3vw, 2rem);
+    line-height: 1.85;
+  }
+
+  .article-content li {
+    margin-bottom: clamp(0.5rem, 1vw, 0.75rem);
+    line-height: 1.85;
+  }
+
+  /* Links */
+  .article-content a {
+    color: #DC2626;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: color 0.2s ease;
+  }
+
+  .article-content a:hover {
+    color: #B91C1C;
+  }
+
+  /* Images in Article */
+  .article-content img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin: clamp(1.5rem, 3vw, 2.5rem) auto;
+    display: block;
+  }
+
+  /* Blockquotes */
+  .article-content blockquote {
+    border-left: 4px solid #DC2626;
+    padding-left: clamp(1rem, 2vw, 1.5rem);
+    margin: clamp(1.5rem, 3vw, 2.5rem) 0;
+    font-style: italic;
+    color: #4b5563;
+    background-color: #f9fafb;
+    padding: clamp(1rem, 2vw, 1.5rem);
+    border-radius: 4px;
+  }
+
+  /* Code/Pre */
+  .article-content code {
+    background-color: #f3f4f6;
+    padding: 0.125rem 0.375rem;
+    border-radius: 4px;
+    font-size: 0.9em;
+    font-family: 'Monaco', 'Courier New', monospace;
+  }
+
+  .article-content pre {
+    background-color: #1f2937;
+    color: #f9fafb;
+    padding: clamp(1rem, 2vw, 1.5rem);
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: clamp(1.5rem, 3vw, 2.5rem) 0;
+  }
+
+  /* Tables */
+  .article-content table {
+    width: 100%;
+    margin: clamp(1.5rem, 3vw, 2.5rem) 0;
+    border-collapse: collapse;
+  }
+
+  .article-content th,
+  .article-content td {
+    padding: clamp(0.75rem, 1.5vw, 1rem);
+    border: 1px solid #e5e7eb;
+    text-align: left;
+  }
+
+  .article-content th {
+    background-color: #f9fafb;
+    font-weight: 600;
+  }
+}
+
+/* ============================================
+   PROSE OVERRIDES - Tailwind Typography Plugin
+   ============================================ */
+
+@layer utilities {
+  .prose-article {
+    @apply prose prose-lg max-w-none;
+    font-size: clamp(17px, 1.25vw, 19px);
+    line-height: 1.85;
+    color: #374151;
+  }
+
+  .prose-article :where(p):not(:where([class~="not-prose"] *)) {
+    margin-bottom: clamp(1.25rem, 2.5vw, 1.75rem);
+    font-size: clamp(17px, 1.25vw, 19px);
+    line-height: 1.85;
+  }
+
+  .prose-article :where(h1):not(:where([class~="not-prose"] *)) {
+    font-size: clamp(28px, 3vw, 32px);
+    line-height: 1.3;
+    font-weight: 700;
+    margin-top: clamp(2rem, 4vw, 3rem);
+    margin-bottom: clamp(1rem, 2vw, 1.5rem);
+    color: #1f2937;
+  }
+
+  .prose-article :where(h2):not(:where([class~="not-prose"] *)) {
+    font-size: clamp(24px, 2.5vw, 28px);
+    line-height: 1.35;
+    font-weight: 600;
+    margin-top: clamp(2rem, 3.5vw, 2.5rem);
+    margin-bottom: clamp(0.75rem, 1.5vw, 1rem);
+    color: #1f2937;
+  }
+
+  .prose-article :where(h3):not(:where([class~="not-prose"] *)) {
+    font-size: clamp(20px, 2vw, 24px);
+    line-height: 1.4;
+    font-weight: 600;
+    margin-top: clamp(1.5rem, 3vw, 2rem);
+    margin-bottom: clamp(0.75rem, 1.5vw, 1rem);
+    color: #1f2937;
+  }
+
+  .prose-article :where(ul, ol):not(:where([class~="not-prose"] *)) {
+    margin-bottom: clamp(1.25rem, 2.5vw, 1.75rem);
+    padding-left: clamp(1.5rem, 3vw, 2rem);
+    line-height: 1.85;
+  }
+
+  .prose-article :where(li):not(:where([class~="not-prose"] *)) {
+    margin-bottom: clamp(0.5rem, 1vw, 0.75rem);
+    line-height: 1.85;
+  }
+
+  .prose-article :where(a):not(:where([class~="not-prose"] *)) {
+    color: #DC2626;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: color 0.2s ease;
+  }
+
+  .prose-article :where(a):not(:where([class~="not-prose"] *)):hover {
+    color: #B91C1C;
+  }
+
+  .prose-article :where(img):not(:where([class~="not-prose"] *)) {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin: clamp(1.5rem, 3vw, 2.5rem) auto;
+    display: block;
+  }
+
+  .prose-article :where(blockquote):not(:where([class~="not-prose"] *)) {
+    border-left: 4px solid #DC2626;
+    padding-left: clamp(1rem, 2vw, 1.5rem);
+    margin: clamp(1.5rem, 3vw, 2.5rem) 0;
+    font-style: italic;
+    color: #4b5563;
+    background-color: #f9fafb;
+    padding: clamp(1rem, 2vw, 1.5rem);
+    border-radius: 4px;
+  }
+}
+
+/* ============================================
+   MOBILE OPTIMIZATIONS
+   ============================================ */
+
+/* ============================================
+   RESPONSIVE OPTIMIZATIONS
+   ============================================ */
+
+@media (max-width: 640px) {
+  .article-container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .article-content,
+  .article-content-inner {
+    font-size: 17px;
+    line-height: 1.9; /* Even more line-height on mobile for better readability */
+    text-align: left; /* Always left on mobile for best readability */
+  }
+
+  .article-title {
+    font-size: clamp(24px, 6vw, 32px);
+    line-height: 1.3;
+    margin-bottom: 1rem;
+  }
+
+  .article-meta {
+    font-size: 14px;
+    padding-bottom: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  /* Reduce paragraph spacing slightly on mobile */
+  .article-content p,
+  .article-content-inner p {
+    margin-bottom: clamp(1.25rem, 2.5vw, 1.5rem);
+  }
+
+  /* First paragraph on mobile */
+  .article-content p:first-of-type,
+  .article-content-inner p:first-of-type {
+    font-size: 18px;
+    line-height: 1.85;
+    margin-bottom: 1.75rem;
+  }
+}
+
+/* Tablet - Optimal reading width */
+@media (min-width: 641px) and (max-width: 1023px) {
+  .article-container {
+    max-width: 680px;
+  }
+
+  .article-content,
+  .article-content-inner {
+    font-size: clamp(17px, 1.5vw, 19px);
+  }
+}
+
+/* Desktop - Standard news portal width */
+@media (min-width: 1024px) {
+  .article-container {
+    max-width: 720px; /* Standard news article width (Lokmat, Indian Express style) */
+  }
+
+  .article-content,
+  .article-content-inner {
+    font-size: 19px;
+    line-height: 1.85;
+    letter-spacing: -0.005em; /* Slightly tighter for better readability */
+  }
+
+  /* Better paragraph spacing on desktop */
+  .article-content p,
+  .article-content-inner p {
+    margin-bottom: 2rem;
+  }
+
+  .article-content p:first-of-type,
+  .article-content-inner p:first-of-type {
+    margin-bottom: 2.5rem;
+  }
+}
+
+/* Large Desktop - Slightly wider but still readable */
+@media (min-width: 1280px) {
+  .article-container {
+    max-width: 760px; /* Slightly wider on large screens, still optimal */
+  }
+}
+
+/* Extra Large - Keep it readable, don't stretch too wide */
+@media (min-width: 1536px) {
+  .article-container {
+    max-width: 800px; /* Max comfortable reading width */
+  }
+}
+
+/* ============================================
+   PRINT STYLES (Optional)
+   ============================================ */
+
+@media print {
+  .article-content {
+    font-size: 12pt;
+    line-height: 1.8;
+    color: #000;
+  }
+
+  .article-content a {
+    color: #000;
+    text-decoration: underline;
+  }
+}
+
+/* Article Content Inner - Direct HTML Content */
+.article-content-inner {
+  font-size: clamp(17px, 1.25vw, 19px);
+  line-height: 1.85;
+  color: #374151;
+  letter-spacing: -0.005em;
+  font-family: var(--font-mukta), var(--font-noto-serif-devanagari), var(--font-inter), system-ui, sans-serif;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+/* Detect and style Marathi/Devanagari content automatically */
+.article-content-inner * {
+  font-family: inherit;
+}
+
+/* Ensure proper spacing for all elements */
+.article-content-inner > *:first-child {
+  margin-top: 0;
+}
+
+.article-content-inner > *:last-child {
+  margin-bottom: 0;
+}
+
+.article-content-inner p {
+  margin-bottom: clamp(1.5rem, 3vw, 2rem); /* Consistent with article-content */
+  font-size: inherit;
+  line-height: 1.85;
+  text-align: left; /* Left-aligned for Marathi/Devanagari readability */
+  word-spacing: 0.05em;
+  text-rendering: optimizeLegibility;
 }
 
 @media (min-width: 1024px) {
-  body {
-    font-size: 18px; /* Larger on desktop */
+  .article-content-inner p:not([lang="mr"]):not([lang="hi"]):not([lang="sa"]) {
+    text-align: justify;
+    text-align-last: left;
   }
+}
+
+.article-content-inner h1 {
+  font-size: clamp(28px, 3vw, 32px);
+  line-height: 1.3;
+  font-weight: 700;
+  margin-top: clamp(2rem, 4vw, 3rem);
+  margin-bottom: clamp(1rem, 2vw, 1.5rem);
+  color: #1f2937;
+  font-family: var(--font-inter), var(--font-mukta), system-ui, sans-serif;
+}
+
+.article-content-inner h2 {
+  font-size: clamp(24px, 2.5vw, 28px);
+  line-height: 1.35;
+  font-weight: 600;
+  margin-top: clamp(2rem, 3.5vw, 2.5rem);
+  margin-bottom: clamp(0.75rem, 1.5vw, 1rem);
+  color: #1f2937;
+  font-family: var(--font-inter), var(--font-mukta), system-ui, sans-serif;
+}
+
+.article-content-inner h3 {
+  font-size: clamp(20px, 2vw, 24px);
+  line-height: 1.4;
+  font-weight: 600;
+  margin-top: clamp(1.5rem, 3vw, 2rem);
+  margin-bottom: clamp(0.75rem, 1.5vw, 1rem);
+  color: #1f2937;
+  font-family: var(--font-inter), var(--font-mukta), system-ui, sans-serif;
+}
+
+.article-content-inner h4 {
+  font-size: clamp(18px, 1.75vw, 20px);
+  line-height: 1.45;
+  font-weight: 600;
+  margin-top: clamp(1.25rem, 2.5vw, 1.75rem);
+  margin-bottom: clamp(0.625rem, 1.25vw, 0.875rem);
+  color: #1f2937;
+}
+
+.article-content-inner ul,
+.article-content-inner ol {
+  margin-bottom: clamp(1.25rem, 2.5vw, 1.75rem);
+  padding-left: clamp(1.5rem, 3vw, 2rem);
+  line-height: 1.85;
+}
+
+.article-content-inner li {
+  margin-bottom: clamp(0.5rem, 1vw, 0.75rem);
+  line-height: 1.85;
+}
+
+.article-content-inner a {
+  color: #DC2626;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color 0.2s ease;
+}
+
+.article-content-inner a:hover {
+  color: #B91C1C;
+}
+
+.article-content-inner img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin: clamp(1.5rem, 3vw, 2.5rem) auto;
+  display: block;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.article-content-inner blockquote {
+  border-left: 4px solid #DC2626;
+  padding-left: clamp(1rem, 2vw, 1.5rem);
+  margin: clamp(1.5rem, 3vw, 2.5rem) 0;
+  font-style: italic;
+  color: #4b5563;
+  background-color: #f9fafb;
+  padding: clamp(1rem, 2vw, 1.5rem);
+  border-radius: 4px;
+}
+
+.article-content-inner strong {
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.article-content-inner em {
+  font-style: italic;
 }
 
 /* Quill Editor Styles */
@@ -27,6 +614,9 @@ body {
 
 .ql-editor {
   min-height: 300px;
+  font-size: 16px;
+  line-height: 1.75;
+  font-family: var(--font-mukta), var(--font-inter), system-ui, sans-serif;
 }
 
 /* Floating Button Animation */

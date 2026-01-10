@@ -100,39 +100,61 @@ export default async function BlogDetailPage({
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <article className="max-w-4xl mx-auto">
-        <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-          {blog.title}
-        </h1>
+    <div className="bg-white">
+      <div className="container mx-auto px-4 md:px-6 lg:px-8 py-8 md:py-10 lg:py-12">
+        <article className="article-container">
+          {/* Article Header */}
+          <header className="mb-8 md:mb-10 lg:mb-12">
+            <h1 className="article-title" lang="mr">
+              {blog.title}
+            </h1>
 
-        <div className="mb-6 text-gray-600">
-          <p>{formatDate(blog.createdAt)}</p>
-          {blog.author && <p>By {blog.author}</p>}
-        </div>
+            <div className="article-meta">
+              <time className="block mb-1.5" dateTime={blog.createdAt}>
+                {formatDate(blog.createdAt)}
+              </time>
+              {blog.author && (
+                <span className="block text-sm md:text-base text-gray-600">
+                  By <span className="font-medium text-gray-900">{blog.author}</span>
+                </span>
+              )}
+            </div>
+          </header>
 
-        {blog.featuredImage && 
-         (blog.featuredImage.startsWith('http') || 
-          blog.featuredImage.startsWith('/uploads/') || 
-          blog.featuredImage.startsWith('/') ||
-          blog.featuredImage.includes('supabase.co')) && (
-          <div className="relative h-96 mb-8 rounded-lg overflow-hidden">
-            <SafeImage
-              src={blog.featuredImage}
-              alt={blog.title}
-              fill
-              className="object-cover"
+          {/* Featured Image */}
+          {blog.featuredImage && 
+           (blog.featuredImage.startsWith('http') || 
+            blog.featuredImage.startsWith('/uploads/') || 
+            blog.featuredImage.startsWith('/') ||
+            blog.featuredImage.includes('supabase.co')) && (
+            <div className="relative w-full mb-10 md:mb-12 lg:mb-16 rounded-lg overflow-hidden shadow-xl">
+              <div className="relative aspect-video md:aspect-[16/9] bg-gray-100">
+                <SafeImage
+                  src={blog.featuredImage}
+                  alt={blog.title}
+                  fill
+                  className="object-cover"
+                  priority
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 800px"
+                />
+              </div>
+            </div>
+          )}
+
+          {/* Article Content */}
+          <div className="article-content">
+            <SanitizedContent
+              html={blog.content}
+              className=""
             />
           </div>
-        )}
 
-        <SanitizedContent
-          html={blog.content}
-          className="prose max-w-none mb-8"
-        />
-
-        <ShareButtons url={`/blogs/${blog.slug}`} title={blog.title} />
-      </article>
+          {/* Share Buttons */}
+          <div className="mt-12 md:mt-16 lg:mt-20 pt-8 md:pt-10 border-t border-gray-200">
+            <ShareButtons url={`/blogs/${blog.slug}`} title={blog.title} />
+          </div>
+        </article>
+      </div>
     </div>
   );
 }

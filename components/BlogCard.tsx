@@ -34,20 +34,20 @@ export default function BlogCard({ blog }: BlogCardProps) {
             />
           </div>
         )}
-        <div className="p-4">
-          <h3 className="font-semibold text-gray-900 group-hover:text-primary transition-colors line-clamp-2 mb-2">
+        <div className="p-5 md:p-6">
+          <h3 className="font-semibold text-base md:text-lg text-gray-900 group-hover:text-primary transition-colors line-clamp-2 mb-3 leading-tight">
             {blog.title}
           </h3>
           {blog.excerpt && (
-            <p className="text-sm text-gray-600 line-clamp-3 mb-3">
+            <p className="text-sm md:text-base text-gray-600 line-clamp-3 mb-4 leading-relaxed">
               {blog.excerpt}
             </p>
           )}
-          <div className="flex items-center justify-between">
-            <p className="text-xs text-gray-500">
+          <div className="flex items-center justify-between pt-2 border-t border-gray-100">
+            <p className="text-xs md:text-sm text-gray-500">
               {formatDate(blog.createdAt)}
             </p>
-            <span className="text-primary text-xs font-medium group-hover:underline">
+            <span className="text-primary text-xs md:text-sm font-medium group-hover:underline">
               Read More →
             </span>
           </div>
