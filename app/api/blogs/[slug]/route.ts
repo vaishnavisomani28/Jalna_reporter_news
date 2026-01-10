@@ -5,7 +5,7 @@ import { blogSchema, sanitizeInput } from '@/lib/validation';
 import { checkRateLimit } from '@/lib/rate-limit';
 import { logger } from '@/lib/logger';
 import { requireCSRF } from '@/lib/csrf';
-import { generateSlug } from '@/lib/utils';
+import { generateSlug, normalizeAuthorName } from '@/lib/utils';
 
 export async function GET(
   request: NextRequest,
@@ -80,7 +80,7 @@ export async function GET(
       );
     }
 
-    // Transform to match expected format
+    // Transform to match expected format and normalize author name
     const formattedBlog = {
       _id: blog.id,
       title: blog.title,
@@ -89,7 +89,7 @@ export async function GET(
       excerpt: blog.excerpt,
       featuredImage: blog.featured_image,
       published: blog.published,
-      author: blog.author,
+      author: normalizeAuthorName(blog.author), // Normalize author name
       createdAt: blog.created_at,
       updatedAt: blog.updated_at,
     };
@@ -249,10 +249,13 @@ export async function PUT(
     }
     
     if (published !== undefined) updates.published = published;
+    
+    // Always ensure author is set correctly (replace "Admin" with correct name)
+    updates.author = normalizeAuthorName(existingBlog.author);
 
     const blog = await blogDb.update(decodedSlug, updates);
 
-    // Transform to match expected format
+    // Transform to match expected format and normalize author name
     const formattedBlog = {
       _id: blog.id,
       title: blog.title,
@@ -261,7 +264,7 @@ export async function PUT(
       excerpt: blog.excerpt,
       featuredImage: blog.featured_image,
       published: blog.published,
-      author: blog.author,
+      author: normalizeAuthorName(blog.author), // Normalize author name
       createdAt: blog.created_at,
       updatedAt: blog.updated_at,
     };

@@ -1,13 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { blogDb } from '@/lib/supabase-db';
 import { requireAuth } from '@/lib/auth';
+import { normalizeAuthorName } from '@/lib/utils';
 
 export const GET = requireAuth(async (request: NextRequest) => {
   try {
     const result = await blogDb.getAll(false, 1, 1000);
     const blogsData = result.data || [];
 
-    // Transform to match expected format
+    // Transform to match expected format and normalize author names
     const formattedBlogs = blogsData.map((blog: any) => ({
       _id: blog.id,
       title: blog.title,
@@ -16,7 +17,7 @@ export const GET = requireAuth(async (request: NextRequest) => {
       excerpt: blog.excerpt,
       featuredImage: blog.featured_image,
       published: blog.published,
-      author: blog.author,
+      author: normalizeAuthorName(blog.author), // Normalize author name
       createdAt: blog.created_at,
       updatedAt: blog.updated_at,
     }));

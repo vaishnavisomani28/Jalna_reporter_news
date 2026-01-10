@@ -6,7 +6,7 @@ import { checkRateLimit } from '@/lib/rate-limit';
 import { logger } from '@/lib/logger';
 import { sanitizeInput } from '@/lib/validation';
 import { requireCSRF } from '@/lib/csrf';
-import { generateSlug } from '@/lib/utils';
+import { generateSlug, normalizeAuthorName } from '@/lib/utils';
 
 export async function GET(request: NextRequest) {
   try {
@@ -77,6 +77,7 @@ export async function GET(request: NextRequest) {
           });
         }
         
+        // Normalize author name - replace "Admin" with correct name
         return {
           _id: blog.id,
           title: blog.title,
@@ -85,7 +86,7 @@ export async function GET(request: NextRequest) {
           excerpt: blog.excerpt,
           featuredImage: blog.featured_image,
           published: blog.published,
-          author: blog.author,
+          author: normalizeAuthorName(blog.author),
           createdAt: blog.created_at,
           updatedAt: blog.updated_at,
         };
