@@ -141,8 +141,8 @@ export default async function BlogDetailPage({
             </div>
           )}
 
-          {/* Article Content */}
-          <div className="article-content">
+          {/* Article Content - Main Reading Area */}
+          <div className="article-content leading-relaxed">
             <SanitizedContent
               html={blog.content}
               className=""
