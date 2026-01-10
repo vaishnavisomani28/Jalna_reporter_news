@@ -49,3 +49,16 @@ export function formatDate(date: Date | string): string {
   }).format(d);
 }
 
+/**
+ * Normalize author name - always returns the correct author name
+ * Replaces "Admin" with "P. Ravikant Danam (Jalna)"
+ */
+export function normalizeAuthorName(author?: string | null): string {
+  const DEFAULT_AUTHOR = 'P. Ravikant Danam (Jalna)';
+  
+  if (!author || author.trim() === '' || author.toLowerCase() === 'admin') {
+    return DEFAULT_AUTHOR;
+  }
+  
+  return author.trim();
+}
