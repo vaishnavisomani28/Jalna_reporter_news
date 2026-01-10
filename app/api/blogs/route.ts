@@ -209,7 +209,7 @@ export const POST = requireAuth(async (request: NextRequest) => {
       excerpt: sanitizedExcerpt,
       featured_image: published ? sanitizedFeaturedImage : undefined,
       published: published || false,
-      author: 'Admin',
+      author: 'P. Ravikant Danam (Jalna)',
     });
 
     // Transform to match expected format

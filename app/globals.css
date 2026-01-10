@@ -37,8 +37,9 @@
 
 @layer components {
   /* Article Container - Optimal Reading Width (News Portal Standard) */
+  /* Reduced by 5% for better readability: 720px * 0.95 = 684px */
   .article-container {
-    max-width: 720px; /* Optimal reading width (matches Lokmat, Indian Express) */
+    max-width: 684px; /* Reduced by 5% for optimal line length (65-75 chars) */
     margin-left: auto;
     margin-right: auto;
     width: 100%;
@@ -88,30 +89,34 @@
     font-size: clamp(13px, 1.4vw, 15px);
   }
 
-  /* Article Content - Rich Text Styling (News Portal Standard) */
+  /* Article Content - Rich Text Styling (Newspaper Style: Dense but Comfortable) */
   .article-content {
     font-size: clamp(17px, 1.25vw, 19px);
-    line-height: 1.85; /* Increased for better readability */
+    line-height: 1.88; /* Slightly increased from 1.85 for better readability */
     color: #374151;
     letter-spacing: -0.005em;
     font-family: var(--font-mukta), var(--font-inter), system-ui, sans-serif;
+    font-weight: 400; /* Standard weight for newspaper readability */
     word-wrap: break-word;
     overflow-wrap: break-word;
     hyphens: auto;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
+    font-feature-settings: "kern" 1, "liga" 1; /* Enable kerning and ligatures */
   }
 
-  /* Enhanced Typography for Marathi Content */
+  /* Enhanced Typography for Marathi Content - Optimized for Devanagari */
   .article-content [lang="hi"],
   .article-content [lang="mr"],
   .article-content [lang="sa"],
   .article-content-inner[lang="mr"],
   .article-content-inner[lang="hi"] {
     font-family: var(--font-noto-serif-devanagari), var(--font-mukta), sans-serif;
-    line-height: 1.9; /* Even more line-height for Devanagari */
+    line-height: 1.92; /* Increased slightly for better Devanagari matra spacing */
     letter-spacing: 0.01em;
+    font-weight: 450; /* Slightly heavier (400-500 range) for better Marathi legibility */
+    font-feature-settings: "kern" 1, "liga" 1, "calt" 1; /* Enable Devanagari features */
   }
 
   /* Auto-detect Devanagari characters and apply proper font */
@@ -128,15 +133,17 @@
     widows: 3;
   }
 
-  /* Paragraph Spacing - Professional news style */
+  /* Paragraph Spacing - Newspaper Style (Minimal, Dense) */
+  /* Reduced by 20%: from 1.5-2rem to 0.7-0.9em max (newspaper style) */
   .article-content p,
   .article-content-inner p {
-    margin-bottom: clamp(1.5rem, 3vw, 2rem); /* More spacing between paragraphs */
+    margin-bottom: 0.8em; /* Minimal spacing - reduced by 20%, newspaper style */
     font-size: clamp(17px, 1.25vw, 19px);
-    line-height: 1.85;
+    line-height: 1.88; /* Slightly increased for readability (compensates for less spacing) */
     text-align: left; /* Left-aligned for better readability, especially for Marathi */
     word-spacing: 0.05em; /* Slightly more word spacing for better readability */
     text-rendering: optimizeLegibility;
+    font-weight: 400; /* Standard weight for newspaper readability */
   }
 
   /* Desktop: Justified text for English/Latin content, left for Devanagari */
@@ -148,14 +155,14 @@
     }
   }
 
-  /* First paragraph - Lead paragraph style (slightly larger, more prominent) */
+  /* First paragraph - Lead paragraph style (newspaper style, minimal spacing) */
   .article-content p:first-of-type,
   .article-content-inner p:first-of-type {
-    font-size: clamp(18px, 1.75vw, 21px);
+    font-size: clamp(18px, 1.5vw, 20px); /* Slightly reduced max size */
     line-height: 1.9;
     color: #1f2937;
     font-weight: 400;
-    margin-bottom: clamp(1.75rem, 3.5vw, 2.5rem);
+    margin-bottom: 1em; /* Reduced spacing (was 1.75-2.5rem, now 1em - 80% reduction) */
     margin-top: 0; /* No top margin for first paragraph */
     letter-spacing: -0.01em;
   }
@@ -198,7 +205,7 @@
   .article-content h2 {
     font-size: clamp(24px, 2.5vw, 28px);
     line-height: 1.35;
-    font-weight: 600;
+    font-weight: 500; /* Reduced from 600 to 500 for better Marathi legibility */
     margin-top: clamp(2rem, 3.5vw, 2.5rem);
     margin-bottom: clamp(0.75rem, 1.5vw, 1rem);
     color: #1f2937;
@@ -207,23 +214,23 @@
   .article-content h3 {
     font-size: clamp(20px, 2vw, 24px);
     line-height: 1.4;
-    font-weight: 600;
+    font-weight: 500; /* Reduced from 600 to 500 for better Marathi legibility */
     margin-top: clamp(1.5rem, 3vw, 2rem);
     margin-bottom: clamp(0.75rem, 1.5vw, 1rem);
     color: #1f2937;
   }
 
-  /* Lists */
+  /* Lists - Newspaper Style (Minimal Spacing) */
   .article-content ul,
   .article-content ol {
-    margin-bottom: clamp(1.25rem, 2.5vw, 1.75rem);
+    margin-bottom: 0.8em; /* Minimal spacing, consistent with paragraphs */
     padding-left: clamp(1.5rem, 3vw, 2rem);
-    line-height: 1.85;
+    line-height: 1.88; /* Increased slightly */
   }
 
   .article-content li {
-    margin-bottom: clamp(0.5rem, 1vw, 0.75rem);
-    line-height: 1.85;
+    margin-bottom: 0.4em; /* Reduced spacing between list items */
+    line-height: 1.88; /* Increased slightly */
   }
 
   /* Links */
@@ -409,8 +416,9 @@
   .article-content,
   .article-content-inner {
     font-size: 17px;
-    line-height: 1.9; /* Even more line-height on mobile for better readability */
+    line-height: 1.9; /* Increased line-height for mobile readability */
     text-align: left; /* Always left on mobile for best readability */
+    font-weight: 400; /* Standard weight */
   }
 
   .article-title {
@@ -425,69 +433,72 @@
     margin-bottom: 1.5rem;
   }
 
-  /* Reduce paragraph spacing slightly on mobile */
+  /* Minimal paragraph spacing on mobile (newspaper style) */
   .article-content p,
   .article-content-inner p {
-    margin-bottom: clamp(1.25rem, 2.5vw, 1.5rem);
+    margin-bottom: 0.8em; /* Consistent with desktop, minimal spacing */
   }
 
   /* First paragraph on mobile */
   .article-content p:first-of-type,
   .article-content-inner p:first-of-type {
     font-size: 18px;
-    line-height: 1.85;
-    margin-bottom: 1.75rem;
+    line-height: 1.9;
+    margin-bottom: 1em; /* Minimal spacing, newspaper style */
   }
 }
 
-/* Tablet - Optimal reading width */
+/* Tablet - Optimal reading width (reduced by 5%) */
 @media (min-width: 641px) and (max-width: 1023px) {
   .article-container {
-    max-width: 680px;
+    max-width: 646px; /* Reduced by 5%: 680px * 0.95 = 646px */
   }
 
   .article-content,
   .article-content-inner {
     font-size: clamp(17px, 1.5vw, 19px);
+    line-height: 1.88;
+    font-weight: 400;
   }
 }
 
-/* Desktop - Standard news portal width */
+/* Desktop - Standard news portal width (reduced by 5%) */
 @media (min-width: 1024px) {
   .article-container {
-    max-width: 720px; /* Standard news article width (Lokmat, Indian Express style) */
+    max-width: 684px; /* Reduced by 5%: 720px * 0.95 = 684px (optimal 65-75 chars per line) */
   }
 
   .article-content,
   .article-content-inner {
     font-size: 19px;
-    line-height: 1.85;
+    line-height: 1.88; /* Increased slightly for readability */
     letter-spacing: -0.005em; /* Slightly tighter for better readability */
+    font-weight: 400; /* Standard weight for newspaper readability */
   }
 
-  /* Better paragraph spacing on desktop */
+  /* Minimal paragraph spacing on desktop (newspaper style) */
   .article-content p,
   .article-content-inner p {
-    margin-bottom: 2rem;
+    margin-bottom: 0.8em; /* Minimal spacing, consistent with mobile */
   }
 
   .article-content p:first-of-type,
   .article-content-inner p:first-of-type {
-    margin-bottom: 2.5rem;
+    margin-bottom: 1em; /* Minimal spacing, consistent with mobile */
   }
 }
 
-/* Large Desktop - Slightly wider but still readable */
+/* Large Desktop - Slightly wider but still readable (reduced by 5%) */
 @media (min-width: 1280px) {
   .article-container {
-    max-width: 760px; /* Slightly wider on large screens, still optimal */
+    max-width: 722px; /* Reduced by 5%: 760px * 0.95 = 722px */
   }
 }
 
-/* Extra Large - Keep it readable, don't stretch too wide */
+/* Extra Large - Keep it readable, don't stretch too wide (reduced by 5%) */
 @media (min-width: 1536px) {
   .article-container {
-    max-width: 800px; /* Max comfortable reading width */
+    max-width: 760px; /* Reduced by 5%: 800px * 0.95 = 760px (max comfortable reading width) */
   }
 }
 
@@ -508,16 +519,21 @@
   }
 }
 
-/* Article Content Inner - Direct HTML Content */
+/* Article Content Inner - Direct HTML Content (Newspaper Style) */
 .article-content-inner {
   font-size: clamp(17px, 1.25vw, 19px);
-  line-height: 1.85;
+  line-height: 1.88; /* Increased slightly for readability */
   color: #374151;
   letter-spacing: -0.005em;
   font-family: var(--font-mukta), var(--font-noto-serif-devanagari), var(--font-inter), system-ui, sans-serif;
+  font-weight: 400; /* Standard weight for newspaper readability */
   word-wrap: break-word;
   overflow-wrap: break-word;
   hyphens: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "kern" 1, "liga" 1; /* Enable kerning and ligatures */
 }
 
 /* Detect and style Marathi/Devanagari content automatically */
@@ -535,12 +551,13 @@
 }
 
 .article-content-inner p {
-  margin-bottom: clamp(1.5rem, 3vw, 2rem); /* Consistent with article-content */
+  margin-bottom: 0.8em; /* Minimal spacing, newspaper style (consistent with article-content) */
   font-size: inherit;
-  line-height: 1.85;
+  line-height: 1.88; /* Increased slightly for readability */
   text-align: left; /* Left-aligned for Marathi/Devanagari readability */
   word-spacing: 0.05em;
   text-rendering: optimizeLegibility;
+  font-weight: 400; /* Standard weight */
 }
 
 @media (min-width: 1024px) {
@@ -563,7 +580,7 @@
 .article-content-inner h2 {
   font-size: clamp(24px, 2.5vw, 28px);
   line-height: 1.35;
-  font-weight: 600;
+  font-weight: 500; /* Reduced from 600 to 500 for better Marathi legibility */
   margin-top: clamp(2rem, 3.5vw, 2.5rem);
   margin-bottom: clamp(0.75rem, 1.5vw, 1rem);
   color: #1f2937;
@@ -573,7 +590,7 @@
 .article-content-inner h3 {
   font-size: clamp(20px, 2vw, 24px);
   line-height: 1.4;
-  font-weight: 600;
+  font-weight: 500; /* Reduced from 600 to 500 for better Marathi legibility */
   margin-top: clamp(1.5rem, 3vw, 2rem);
   margin-bottom: clamp(0.75rem, 1.5vw, 1rem);
   color: #1f2937;
@@ -583,7 +600,7 @@
 .article-content-inner h4 {
   font-size: clamp(18px, 1.75vw, 20px);
   line-height: 1.45;
-  font-weight: 600;
+  font-weight: 500; /* Reduced from 600 to 500 for better Marathi legibility */
   margin-top: clamp(1.25rem, 2.5vw, 1.75rem);
   margin-bottom: clamp(0.625rem, 1.25vw, 0.875rem);
   color: #1f2937;
@@ -591,14 +608,14 @@
 
 .article-content-inner ul,
 .article-content-inner ol {
-  margin-bottom: clamp(1.25rem, 2.5vw, 1.75rem);
+  margin-bottom: 0.8em; /* Minimal spacing, consistent with paragraphs */
   padding-left: clamp(1.5rem, 3vw, 2rem);
-  line-height: 1.85;
+  line-height: 1.88; /* Increased slightly */
 }
 
 .article-content-inner li {
-  margin-bottom: clamp(0.5rem, 1vw, 0.75rem);
-  line-height: 1.85;
+  margin-bottom: 0.4em; /* Reduced spacing between list items */
+  line-height: 1.88; /* Increased slightly */
 }
 
 .article-content-inner a {
@@ -633,7 +650,7 @@
 }
 
 .article-content-inner strong {
-  font-weight: 600;
+  font-weight: 500; /* Reduced from 600 to 500 for better Marathi legibility (400-500 range) */
   color: #1f2937;
 }
 
